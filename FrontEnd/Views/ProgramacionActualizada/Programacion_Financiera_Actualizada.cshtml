@@ -1,0 +1,105 @@
+﻿@model List<Common.ViewModels.ProgramacionFinancieraActualizadaViewModel>
+@{
+    ViewBag.Title = "Programacion_Financiera_Actualizada";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles
+{
+    <style>
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: #f2f2f2; /* Color de fondo para el encabezado */
+            z-index: 1; /* Para asegurarse de que el encabezado quede encima del contenido */
+        }
+
+        tr > th:nth-child(2) {
+            border-top-left-radius: 8px !important;
+        }
+    </style>
+}
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6"><h3 class="mb-0">Plan Financiero</h3></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-end">
+                    <li class="breadcrumb-item"><a href="#">Programación Actualizada</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Plan Financiero</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="app-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-dark" role="alert">
+                    <ul class="p-2 m-0">
+                        <li class="fs-6">Unidad Orgánica: <b>@ViewBag.Dependencia</b></li>
+                        <li class="fs-6">Año: <b>@ViewBag.Anio</b></li>
+                        <li class="fs-6">Id de Actividad Operativa: <b>@ViewBag.Codigo_Actividad</b></li>
+                        <li class="fs-6">Denominacion: <b>@ViewBag.Denominacion</b></li>
+                    </ul>
+                </div>
+                <section class="mt-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                    </div>
+                    <input type="text" class="form-control d-none" id="Id_Actividad" value="@ViewBag.Id_Actividad" disabled />
+                    <div class="table-responsive overflow-auto mt-2 w-100" style="max-height: 650px">
+                        <table class="table table-responsive">
+                            <colgroup>
+                                <col width="10" />
+                                <col width="10" />
+                                <col width="20" />
+                                <col width="20" />
+                                <col width="20" />
+                                <col width="20" />
+                            </colgroup>
+                            <thead class="">
+                                <tr>
+                                    <th>Finalidad Presupuestal</th>
+                                    <th>Específica</th>
+                                    <th>PIA</th>
+                                    <th>PIM</th>
+                                    <th>Certificado</th>
+                                    <th>Devengado</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Codigo_Finalidad</td>
+                                        <td>@item.Clasificador_Gasto</td>
+                                        <td>@item.PIA</td>
+                                        <td>@item.PIM</td>
+                                        <td>@item.Certificado</td>
+                                        <td>@item.Devengado</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot class="sticky-bottom">
+                                <tr>
+                                    <td colspan="2" class="text-end fw-bold border border-1">Total:</td>
+                                    <td class=""><b>@Model.Sum(e => e.PIA)</b></td>
+                                    <td class=""><b>@Model.Sum(e => e.PIM)</b></td>
+                                    <td class=""><b>@Model.Sum(e => e.Certificado)</b></td>
+                                    <td class=""><b>@Model.Sum(e => e.Devengado)</b></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-end mt-4 gap-3 mt-4">
+                        <a href="@Url.Action("Tareas", "ProgramacionActualizada",new { Id_Actividad = ViewBag.Id_Actividad })" class="btn btn-sm btn-secondary mr-2">Regresar</a>
+                        <a href="@Url.Action("GenerarFicha", "ProgramacionActualizada", new { Id_Actividad = ViewBag.Id_Actividad })" class="btn btn-sm btn-secondary">Generar Ficha</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>

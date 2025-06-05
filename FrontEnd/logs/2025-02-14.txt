@@ -1,0 +1,18 @@
+2025-02-14 09:47:58,070 [6] ERROR App  
+ System.InvalidOperationException: Se proporcionó un URI de solicitud no válido. El URI de solicitud debe ser un URI absoluto o debe establecerse BaseAddress.
+   en System.Net.Http.HttpClient.PrepareRequestMessage(HttpRequestMessage request)
+   en System.Net.Http.HttpClient.SendAsync(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationToken cancellationToken)
+   en System.Net.Http.HttpClient.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   en System.Net.Http.HttpClient.PostAsync(Uri requestUri, HttpContent content, CancellationToken cancellationToken)
+   en System.Net.Http.HttpClient.PostAsync(String requestUri, HttpContent content)
+   en FrontEnd.Controllers.AccountController.<Connect>d__4.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 45 
+ 
+2025-02-14 09:48:09,843 [6] ERROR App  
+ System.InvalidOperationException: Se proporcionó un URI de solicitud no válido. El URI de solicitud debe ser un URI absoluto o debe establecerse BaseAddress.
+   en System.Net.Http.HttpClient.PrepareRequestMessage(HttpRequestMessage request)
+   en System.Net.Http.HttpClient.SendAsync(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationToken cancellationToken)
+   en System.Net.Http.HttpClient.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   en System.Net.Http.HttpClient.PostAsync(Uri requestUri, HttpContent content, CancellationToken cancellationToken)
+   en System.Net.Http.HttpClient.PostAsync(String requestUri, HttpContent content)
+   en FrontEnd.Controllers.AccountController.<Connect>d__4.MoveNext() 
+ 

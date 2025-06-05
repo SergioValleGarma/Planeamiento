@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FF88E0B8-0C6E-46EA-96E8-977FB850C9D4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Common</RootNamespace>
+    <AssemblyName>Common</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.4\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Auth\AccessTokenUserInformation.cs" />
+    <Compile Include="Auth\ApiOpciones.cs" />
+    <Compile Include="Auth\ApiPerfiles.cs" />
+    <Compile Include="Auth\ApiUser.cs" />
+    <Compile Include="Auth\Crypto.cs" />
+    <Compile Include="Auth\CurrentUser.cs" />
+    <Compile Include="Auth\mServiceResponse.cs" />
+    <Compile Include="Auth\RoleNames.cs" />
+    <Compile Include="Models\AccionEstrategica.cs" />
+    <Compile Include="Models\ActividadOperativa.cs" />
+    <Compile Include="Models\ActividadOperativa_Actualizada.cs" />
+    <Compile Include="Models\AlineamientoEstrategico.cs" />
+    <Compile Include="Models\Auditoria.cs" />
+    <Compile Include="Models\Bloqueo.cs" />
+    <Compile Include="Models\CabActividadOperativa.cs" />
+    <Compile Include="Models\Database.cs" />
+    <Compile Include="Models\GeneralResponse.cs" />
+    <Compile Include="Models\ObjetivoEstrategico.cs" />
+    <Compile Include="Models\Proceso.cs" />
+    <Compile Include="Models\ProgramacionFinanciera.cs" />
+    <Compile Include="Models\ReporteSemaforo.cs" />
+    <Compile Include="Models\SeguimientoFisico.cs" />
+    <Compile Include="Models\Select2.cs" />
+    <Compile Include="Models\Tarea.cs" />
+    <Compile Include="Models\UnidadMedida.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\AccionEstrategicaViewModel.cs" />
+    <Compile Include="ViewModels\ActividadOperativaActualizadaViewModel.cs" />
+    <Compile Include="ViewModels\ActividadOperativaViewModel.cs" />
+    <Compile Include="ViewModels\BloqueoViewModel.cs" />
+    <Compile Include="ViewModels\Catalogo_ActividadOperativaViewModel.cs" />
+    <Compile Include="ViewModels\DependenciaViewModel.cs" />
+    <Compile Include="ViewModels\ObjetivoEstrategicoViewModel.cs" />
+    <Compile Include="ViewModels\ProcesoViewModel.cs" />
+    <Compile Include="ViewModels\ProgramacionFinancieraViewModel.cs" />
+    <Compile Include="ViewModels\SeguimientoTareaViewModel.cs" />
+    <Compile Include="ViewModels\TareaViewModel.cs" />
+    <Compile Include="ViewModels\UnidadMedidaViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

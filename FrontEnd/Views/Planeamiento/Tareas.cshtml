@@ -1,0 +1,616 @@
+﻿@{
+    ViewBag.Title = "Tareas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles
+{
+    <style>
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: #f2f2f2; /* Color de fondo para el encabezado */
+            z-index: 1; /* Para asegurarse de que el encabezado quede encima del contenido */
+        }
+
+        tr > th:nth-child(2) {
+            border-top-left-radius: 8px !important;
+        }
+    </style>
+}
+
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6"><h3 class="mb-0">Tareas</h3></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-end">
+                    <li class="breadcrumb-item"><a href="#">Programación Inicial</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Tareas</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="app-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-dark" role="alert">
+                    <ul class="p-2 m-0">
+                        <li class="fs-6">Unidad Orgánica: <b>@ViewBag.Dependencia</b></li>
+                        <li class="fs-6">Año: <b>@ViewBag.Anio</b></li>
+                        <li class="fs-6">Id de Actividad Operativa: <b>@ViewBag.Codigo_Actividad</b></li>
+                        <li class="fs-6">Denominacion: <b>@ViewBag.Denominacion</b></li>
+                    </ul>
+                </div>
+                <section class="mt-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="fw-bold">Tareas de la Actividad Operativa</h5>
+                        @* Deshabilitar para más adelante *@
+                        @*<button class="btn btn-sm btn-dark" onclick="agregarNuevaFila()">Agregar Fila</button>*@
+                    </div>
+                    <input type="text" class="form-control d-none" id="Id_Actividad" value="@ViewBag.Id_Actividad" disabled />
+                    <div class="table-responsive overflow-auto mt-2" style="max-height: 480px">
+                        <table class="table table-striped-columns table-responsive" id="tbl-tareas">
+                            <colgroup>
+                                <col style="width: 15%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%">
+                                <col style="width: 2%">
+                                <col style="width: 2%">
+                                <col style="width: 2%">
+                                <col style="width: 2%">
+                                <col style="width: 2%">
+                                <col style="width: 2%">
+                                <col style="width: 2%">
+                                <col style="width: 2%">
+                                <col style="width: 2%">
+                                <col style="width: 2%">
+                                <col style="width: 2%">
+                                <col style="width: 2%">
+                                <col style="width: 2%">
+                                <col style="width: 3%">
+                                @*<col style="width: 4%">*@
+                            </colgroup>
+                            <thead class="">
+                                <tr>
+                                    <th class="d-none">Id_Tarea</th>
+                                    <th>Desagregación</th>
+                                    <th>Código de Proceso</th>
+                                    <th>Unidad de Medida</th>
+                                    <th>Ene</th>
+                                    <th>Feb</th>
+                                    <th>Mar</th>
+                                    <th>Abr</th>
+                                    <th>May</th>
+                                    <th>Jun</th>
+                                    <th>Jul</th>
+                                    <th>Ago</th>
+                                    <th>Set</th>
+                                    <th>Oct</th>
+                                    <th>Nov</th>
+                                    <th>Dic</th>
+                                    <th>Total</th>
+                                    <th>CEPLAN</th>
+                                    @*<th></th>*@
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-end mt-4 gap-3 mt-4">
+                        <a href="@Url.Action("Index")" class="btn btn-sm btn-secondary mr-2">Regresar</a>
+                        <a href="@Url.Action("PlanFinanciero", "Planeamiento", new { Id_Actividad = ViewBag.Id_Actividad })" class="btn btn-sm btn-secondary">Siguiente</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        toastr.options = {
+            "positionClass": "toast-bottom-full-width",
+            "preventDuplicates": true,
+        }
+
+        const table_tareas = document.querySelector("#tbl-tareas");
+
+        function listarTareas() {
+            const params = { Id_Actividad: $("#Id_Actividad").val()}
+            $.ajax({
+                    url: '@Url.Action("Listar_Tareas", "Planeamiento")',
+                    beforeSend: function () {
+                        //$('#loading').modal('show');
+                    },
+                    contentType: "application/json",
+                    dataType: "json",
+                    type: 'POST',
+                    data: JSON.stringify(params),
+                    success: function (response) {
+                        if (!response.success) return;
+
+                        if (!response.data.length) {
+                            toastr.info("No hay tareas disponibles");
+                        }
+
+                        response.data.forEach(row => construirFila(row));
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        console.log("Error: ", errorMessage);
+                    },
+                    complete: function () {
+                        //$('#loading').modal('hide');
+                    }
+                });
+        }
+
+        function agregarNuevaFila() {
+            if (document.querySelector(".fila-nueva")) {
+                toastr.info("Ya existe una fila nueva");
+                return;
+            }
+
+            if (document.querySelector(".isEditing")) {
+                toastr.info("Termine de editar la fila para realizar más acciones");
+                return;
+            }
+
+            const fila = construirFila();
+
+            buildSelections(fila);
+        }
+
+        function editarFila(event) {
+            if (
+                document.querySelector(".fila-nueva") ||
+                document.querySelector(".isEditing")
+            ) {
+                toastr.info("Termine de editar la fila para realizar más acciones");
+                return;
+            }
+
+            const fila = event.target.closest("tr");
+            const filaCopia = fila.cloneNode(true);
+
+            buildSelections(fila);
+
+            fila.classList.add("table-active", "table-info", "isEditing");
+
+            construirBotonesEdicion(fila, filaCopia);
+            toggleContentEditable(fila, true);
+        }
+
+        function buildSelections(fila) {
+            const unidad_medida = fila.querySelector(".unidad_medida");
+            const unidad_medida_txt = unidad_medida.innerText;
+            unidad_medida.innerHTML = `<select class="unidad_medida-select" style="width: 100px"></select>`
+            listarUnidadMedida(unidad_medida);
+            $(unidad_medida).find('.select2-selection__placeholder').text(unidad_medida_txt);
+
+            //const proceso = fila.querySelector(".proceso");
+            //const proceso_txt = proceso.innerText;
+            //proceso.innerHTML = `<select class="proceso-select" style="width: 100px"></select>`
+            //listarProceso(proceso);
+            //$(proceso).find('.select2-selection__placeholder').text(proceso_txt);
+        }
+
+        function guardarEdicion(fila) {
+            const Filameses = [...fila.querySelectorAll("[data-mes]")];
+            const Id_Actividad = document.querySelector("#Id_Actividad").value;
+            const Id_Tarea = fila.querySelector(".Id_Tarea_row").innerText;
+            const desagregacion = fila.querySelector(".desagregacion").innerText;
+            //const proceso = fila.querySelector(".proceso select").value;
+            //const proceso_prev = fila.querySelector(".proceso").getAttribute("data-id");
+            const unidad_medida = fila.querySelector(".unidad_medida select").value;
+            const unidad_medida_prev = fila.querySelector(".unidad_medida").getAttribute("data-id");
+            const cePlan = fila.querySelector(".CePlan").checked;
+            const listaMeses = Filameses.map((item) => {
+                return {
+                    Mes: item.getAttribute("data-mes"),
+                    Cantidad: item.innerText
+                };
+            });
+
+            const model = {
+                Id_Actividad: Id_Actividad,
+                Id_Tarea: Id_Tarea,
+                Desagregacion: desagregacion,
+                //Codigo_Proceso: !proceso ? proceso_prev : proceso,
+                Codigo_Unidad_Medida: !unidad_medida ? unidad_medida_prev : unidad_medida,
+                CePlan: cePlan,
+                listaMeses: listaMeses
+            }
+
+             $.ajax({
+                url: '@Url.Action("Crear_Tarea", "Planeamiento")',
+                beforeSend: function () {
+                    $('#loading').modal('show');
+                },
+                contentType: "application/json",
+                dataType: "json",
+                type: 'POST',
+                data: JSON.stringify(model),
+                success: function (response) {
+                        if (!response.success) {
+                            response.errors.forEach(({ Errors }) => {
+                                Errors.forEach(error => {
+                                    toastr.error(error)
+                                });
+                            });
+                            return;
+                        }
+
+                    if (response.data.Status == "error") {
+                        toastr.error(response.data.Message);
+                        return;
+                    }
+
+                    toastr.success(response.data.Message);
+
+                    fila.querySelector(".Id_Tarea_row").innerText = response.data.Codigo_Registro;
+
+                    fila.classList.remove(...fila.classList);
+                    removerSeleccionables(fila)
+                    toggleContentEditable(fila, false);
+                    construirBotones(fila);
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    console.log("Error: ", errorMessage);
+                },
+                complete: function () {
+                    $('#loading').modal('hide');
+                }
+            });
+        }
+
+        function removerSeleccionables(fila) {
+            const unidadMedidaContenedor = fila.querySelector(".unidad_medida");
+            const unidadMedidaPlaceholder = unidadMedidaContenedor.querySelector(".select2-selection__placeholder")?.innerText ?? "";
+            const unidadMedidaSelect2 = $(unidadMedidaContenedor).find("select").select2("data")[0];
+            const unidadSeleccionadaTexto = unidadMedidaSelect2?.text ?? unidadMedidaPlaceholder;
+            const unidadSeleccionadaId = unidadMedidaSelect2?.id;
+            if (unidadSeleccionadaId) unidadMedidaContenedor.setAttribute("data-id", unidadSeleccionadaId);
+            unidadMedidaContenedor.innerHTML = unidadSeleccionadaTexto;
+
+            //const procesoContenedor = fila.querySelector(".proceso");
+            //const procesoPlaceholder = procesoContenedor.querySelector(".select2-selection__placeholder")?.innerText ?? "";
+            //const procesoSelect2 = $(procesoContenedor).find("select").select2("data")[0];
+            //const procesoSeleccionadaTexto = procesoSelect2?.text ?? procesoPlaceholder;
+            //const procesoSeleccionadaId = procesoSelect2?.id;
+            //if (procesoSeleccionadaId) procesoContenedor.setAttribute("data-id", procesoSeleccionadaId);
+            //procesoContenedor.innerHTML = procesoSeleccionadaTexto;
+        }
+
+        function construirBotones(fila) {
+            const filaAcciones = fila.querySelector(".contenedor-botones");
+            filaAcciones.innerHTML = `
+                <div>
+                <button class="btn btn-sm btn-secondary" onclick="editarFila(event)">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-secondary" onclick="Desactivar_Tarea(this)">
+                    <i class="fa fa-trash"></i>
+                </button>
+                </div>
+            `;
+        }
+
+        function construirFila(tarea = null) {
+            const FilaHTML = document.createElement("tr");
+            const contentEditable = tarea ? "false" : "plaintext-only";
+            const listMeses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"];
+
+            FilaHTML.className = !tarea ? "fila-nueva table-active table-success" : "";
+            FilaHTML.innerHTML = "";
+            FilaHTML.innerHTML += `<td class="d-none Id_Tarea_row">${tarea?.Id_Tarea ?? 0}</td>`
+            FilaHTML.innerHTML +=`<td><div contenteditable=${contentEditable} aria-multiline="true" role="textbox" tabindex="0" spellcheck="true" dir="ltr" class="p-2 desagregacion">${tarea?.Desagregacion ?? "Escriba aquí"}</div></td>`;
+            //FilaHTML.innerHTML += `<td class="proceso" data-id="${tarea?.Id_Proceso ?? ""}">${tarea?.Proceso ?? ""}</td>`;
+            FilaHTML.innerHTML += `<td></td>`;
+            FilaHTML.innerHTML += `<td class="unidad_medida" data-id="${tarea?.Cod_Unidad_Medida ?? ""}">${tarea?.Unidad_Medida ?? ""}</td>`;
+            FilaHTML.innerHTML += `${Array.from({ length: 12 }, (_, index) => `
+            <td>
+                <div contenteditable=${contentEditable} aria-multiline="true" role="textbox" tabindex="0" class="valores-fila" spellcheck="true" dir="ltr" data-mes="${index + 1}">${tarea ? tarea[listMeses[index]] : 0}</div>
+            </td>`).join("")}`;
+            FilaHTML.innerHTML += `<td class="total-fila">${tarea?.Total ?? 0}</td>`;
+            FilaHTML.innerHTML += `<td>
+                <div class="form-check form-switch">
+                    <input class="form-check-input CePlan" type="checkbox" role="switch" id="" ${tarea ? "disabled" : ""} ${tarea?.CePlan ? "checked" : "" }>
+                </div></td>`;
+            //FilaHTML.innerHTML += `<td class="contenedor-botones">
+            //    ${tarea
+            //    ? `<div>
+            //            <button class="btn btn-sm btn-secondary" onclick="editarFila(event)">
+            //                <i class="fa fa-pencil"></i>
+            //            </button>
+            //            <button class="btn btn-sm btn-secondary" onclick="Desactivar_Tarea(this)">
+            //                <i class="fa fa-trash"></i>
+            //            </button>
+            //        </div>`
+            //    : ""
+            //    }
+            //</td>`;
+
+            table_tareas.querySelector("tbody").append(FilaHTML);
+
+            if (!tarea) {
+                construirBotonesEdicion(FilaHTML)
+                FilaHTML.querySelector("td:nth-child(2) div").focus();
+            }
+
+            return FilaHTML;
+        }
+
+        function construirBoton(clase, titulo, iconoHTML, onClick) {
+            const btn = document.createElement("button");
+            btn.className = clase;
+            btn.setAttribute("title", titulo);
+            btn.innerHTML = iconoHTML;
+            btn.onclick = onClick;
+            return btn;
+        }
+
+        function construirBotonesEdicion(fila, filaCopia = null) {
+            const filaAcciones = fila.querySelector(".contenedor-botones");
+            const div = document.createElement("div");
+            div.setAttribute("class", "d-flex");
+
+            filaAcciones.innerHTML = "";
+
+            const btnGuardar = construirBoton(
+                "btn btn-sm btn-secondary me-1",
+                "Guardar Fila",
+                `<i class="fa fa-floppy-o"></i>`,
+                () => guardarEdicion(fila)
+            );
+
+            const btnCancelar = construirBoton(
+                "btn btn-sm btn-secondary",
+                "Cancelar Edición",
+                `<i class="fa fa-times"></i>`,
+                () => (filaCopia ? cancelarEdicion(filaCopia) : cancelarNuevaFila())
+            );
+
+            div.append(btnGuardar, btnCancelar);
+            filaAcciones.append(div);
+        }
+
+        function fnIsEditable(isEditable) {
+            return isEditable ? "plaintext-only" : "false";
+        }
+
+        function toggleContentEditable(fila, isEditable) {
+            if (isEditable) {
+                fila.querySelector(".CePlan").removeAttribute("disabled");
+            } else {
+                fila.querySelector(".CePlan").setAttribute("disabled", true);
+            }
+
+            fila.querySelectorAll("div[contenteditable]").forEach((div) => {
+                div.setAttribute("contenteditable", fnIsEditable(isEditable));
+                div.classList.toggle("py-2", isEditable);
+            });
+        }
+
+        function cancelarNuevaFila() {
+            document.querySelector(".fila-nueva")?.remove();
+        }
+
+        function cancelarEdicion(filaCopia) {
+            const fila = document.querySelector(".isEditing");
+            if (!fila) return;
+
+            fila.parentNode.replaceChild(filaCopia, fila);
+            fila.querySelector(".contenedor-botones").innerHTML = construirBotones(fila);
+        }
+
+        function manejarNumeros(elemento) {
+            const fila = elemento.closest("tr");
+            const totalFila = fila.querySelector(".total-fila");
+            const contenido = elemento.innerText;
+            const regex = /^\d{1,6}$/;
+
+            if (!regex.test(contenido)) {
+                elemento.innerText = contenido.slice(0, -1);
+            }
+
+            calcularTotal(fila, totalFila);
+        }
+
+        function calcularTotal(fila, totalFila) {
+            const total = Array.from(fila.querySelectorAll(".valores-fila")).reduce(
+                (acc, valor) => acc + (parseInt(valor.innerText, 10) || 0),
+                0
+            );
+            totalFila.innerText = total;
+        }
+
+        function listarProceso(element) {
+            $(element).find("select").select2({
+            language: "es",
+            width: '200px',
+            allowClear: true,
+            placeholder: "--TODOS--",
+                ajax: {
+                    type: "POST",
+                    url: '@Url.Action("ListarProcesoPaginacion", "Planeamiento")',
+                    setTimeout:5000,
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            vBuscar: params.term,
+                            viewRows: 30,
+                            page: params.page
+                        };
+                    },
+                    success: function (data) {
+                        var data = $.map(data.item, function (obj) {
+                            obj.id = obj.id || obj.iCodProceso;
+                            obj.text = obj.text || obj.nvDescripcion;
+                            return obj;
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        if (jqXHR.statusText === "parsererror") {
+                            $(location).attr('href', '@Url.Action("Logout", "Account")')
+                        }
+                        console.log(jqXHR)
+                        console.log(textStatus)
+                        console.log(errorThrown)
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+
+                        return {
+                            results: data.item,
+                            pagination: {
+                                more: (params.page * 15) < data.total_count
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                placeholder: "--TODOS--",
+        });
+        }
+
+        function listarUnidadMedida(element) {
+            $(element).find("select").select2({
+            language: "es",
+            width: '200px',
+            allowClear: true,
+            placeholder: "--TODOS--",
+                ajax: {
+                    type: "POST",
+                    url: '@Url.Action("ListarUnidadMedidaPaginacion", "Planeamiento")',
+                    setTimeout:5000,
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            vBuscar: params.term,
+                            viewRows: 30,
+                            page: params.page
+                        };
+                    },
+                    success: function (data) {
+                        var data = $.map(data.item, function (obj) {
+                            obj.id = obj.id || obj.iCodUnidadMedida;
+                            obj.text = obj.text || obj.nvDescripcion;
+                            return obj;
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        if (jqXHR.statusText === "parsererror") {
+                            $(location).attr('href', '@Url.Action("Logout", "Account")')
+                        }
+                        console.log(jqXHR)
+                        console.log(textStatus)
+                        console.log(errorThrown)
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+
+                        return {
+                            results: data.item,
+                            pagination: {
+                                more: (params.page * 15) < data.total_count
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                placeholder: "--TODOS--",
+        });
+        }
+
+        function Desactivar_Tarea(element) {
+            if (
+                document.querySelector(".fila-nueva") ||
+                document.querySelector(".isEditing")
+            ) {
+                toastr.info("Termine de editar la fila para realizar más acciones");
+                return;
+            }
+
+            const fila = element.closest("tr");
+            const Id_Tarea = fila.querySelector(".Id_Tarea_row").innerText;
+            swal({
+                title: "¿Estás seguro que deseas desactivar la tarea?",
+                text: "¡Usted ya no podrá recuperar la tarea!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si, deseo desactivarlo!"
+            }, function () {
+                $.ajax({
+                    url: '@Url.Action("Desactivar_Tarea", "Planeamiento")',
+                    beforeSend: function () {
+                        $('#loading').modal('show');
+                    },
+                    content: "application/json; charset=utf-8",
+                    dataType: "json",
+                    type: 'POST',
+                    data: {
+                        iCodTarea: Id_Tarea
+                    },
+                    success: function (response) {
+                        if (!response.success) {
+                            toastr.error(response.data);
+                            return;
+                        }
+
+                        if (response.data.Status == "error") {
+                            toastr.error(response.data.Message);
+                            return;
+                        }
+
+                        toastr.success(response.data.Message);
+                        fila?.remove();
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        console.log("Error: ", errorMessage);
+                    },
+                    complete: function () {
+                        $('#loading').modal('hide');
+                    }
+                });
+            });
+        }
+
+        function manejarEntradaNumerica(event) {
+            var x = event.which || event.keyCode;
+
+            if ((x >= 48 && x <= 57) || x === 8) {
+                manejarNumeros(event.target);
+            } else {
+                event.preventDefault();
+            }
+        }
+
+        function manejarInputsNumericos(event) {
+            manejarNumeros(event.target);
+        }
+
+        $(document).on("keypress", ".valores-fila", function (e) {
+            manejarEntradaNumerica(e);
+        });
+
+        $(document).on("input", ".valores-fila", function (e) {
+            manejarInputsNumericos(e);
+        });
+
+        $(document).on("paste", "div[contenteditable]", function (e) {
+            e.preventDefault();
+        });
+
+        listarTareas();
+    </script>
+}

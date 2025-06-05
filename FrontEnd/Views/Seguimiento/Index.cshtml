@@ -1,0 +1,200 @@
+﻿@using Common.ViewModels;
+@using FrontEnd.Models;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var isCoordinador = GlobalConfig.isCoordinador;
+    var isSupervisor = GlobalConfig.isSupervisor;
+    var isOperador = GlobalConfig.isOperador;
+
+    var unidadOrganica = isOperador ? GlobalConfig.unidadOrganica : TempData["unidadOrganica"] as string;
+    var dependencias = ViewBag.lstDependenciaGrouped as List<DependenciaViewModel>;
+
+    var listAnios = Helper.ListarAnios();
+}
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6"><h3 class="mb-0">Seguimiento</h3></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-end">
+                    <li class="breadcrumb-item"><a href="#">Seguimiento</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- FILTROS DE BÚSQUEDA -->
+                <section class="card card-secondary mb-3">
+                    <h5 class="card-header text-bg-secondary">Criterio de Búsqueda</h5>
+                    <div class="row card-body align-items-end">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="ddlUnidadOrganica" class="form-label">Unidad de Organización Responsable</label>
+                                <select id="ddlUnidadOrganica" class="form-select" placeholder="Seleccionar Dependencia" @(!isOperador ? "" : "disabled") style="width: 100%;">
+                                    @foreach (var dependecia in dependencias)
+                                    {
+                                        <option value="@dependecia.iCodigoDependencia" @(dependecia.iCodigoDependencia.ToString() == unidadOrganica ? "selected" : "")>@dependecia.vDependencia</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="ddlAnio" class="form-label">Periodo</label>
+                                <select class="form-control" aria-label="" id="ddlAnio">
+                                    @foreach (var anio in listAnios)
+                                    {
+                                        <option value="@anio">@anio</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <button class="btn btn-secondary" id="btnBuscar">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                @*LISTADO DE ACTIVIDADES OPERATIVAS*@
+                <section class="card card-secondary mb-3">
+                    <h5 class="card-header text-bg-secondary">Seguimiento Físico</h5>
+                    <div class="card-body row align-items-end">
+                        <div class="d-flex align-items-center justify-content-between w-100">
+                            <h5 class="fw-bold"></h5>
+                        </div>
+                        <table class="table table-striped table-responsive" id="table-actividad-operativa">
+                            <colgroup>
+                                <col style="width: 8%;">
+                                <col style="width: 8%">
+                                <col style="width: 15%;">
+                                <col style="width: 15%">
+                                <col style="width: 15%">
+                                <col style="width: 8%">
+                                <col style="width: 8%">
+                            </colgroup>
+                            <thead class="">
+                                <tr>
+                                    <th>N°</th>
+                                    <th>Finalidad Pres.</th>
+                                    <th>Denominación de la Actividad Operativa</th>
+                                    <th>Objetivo Est.</th>
+                                    <th>Acción Est.</th>
+                                    <th class="text-center">Registro del Seguimiento</th>
+                                    <th class="text-center">Reporte Físico</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                <tr><td colspan="7" class="text-center fw-bold">No hay registros</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="mt-3">
+                </section>
+
+                <div id="partialFormContainer"></div>
+            </div>
+            <div class="col">
+                <section class="card card-secondary mb-3">
+                    <h5 class="card-header text-bg-secondary">Información Presupuestal</h5>
+                    <div class="card-body row align-items-end">
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiNDA3YTA0NDUtMDRhYy00Yzc2LWJmZjUtNDhjMGY3MDgyZDE4IiwidCI6ImU1MGRhM2RiLTY4NGEtNDM5Yy1hMDFiLWQ5N2I1Mzg4ZmU2MSIsImMiOjR9" target="_blank">Tablero de Control para el Seguimiento de la Ejecución Presupuestal</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $("#ddlUnidadOrganica").select2();
+
+        toastr.options = {
+            "positionClass": "toast-bottom-full-width",
+            "preventDuplicates": true,
+        }
+
+        function Listar_Actividad_Operativa() {
+            const nAnio = $("#ddlAnio").val();
+            const Codigo_Dependencia = $("#ddlUnidadOrganica").val();
+
+            if (!Codigo_Dependencia) {
+                toastr.error("Debe ingresar una Unidad Orgánica");
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("Listar_Actividad_Operativa_Act", "ProgramacionActualizada")',
+                beforeSend: function () {
+                    //$('#loading').modal('show');
+                },
+                content: "application/json; charset=utf-8",
+                dataType: "json",
+                type: 'POST',
+                data: {
+                    nAnio: nAnio,
+                    Codigo_Dependencia: Codigo_Dependencia
+                },
+                success: function (data) {
+                    const tbody = document.querySelector("#table-actividad-operativa > tbody");
+                    tbody.innerHTML = Construir_Filas_Actividad_Operativa(data);
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    console.log("Error: ", errorMessage);
+                },
+                complete: function () {
+                    //$('#loading').modal('hide');
+                }
+            });
+        }
+
+        function Construir_Filas_Actividad_Operativa(lista) {
+            let html = "";
+            if (lista.length == 0) {
+                html += `<tr><td colspan="6" class="text-center fw-bold">No hay registros</td></tr>`
+            } else {
+                const urlTarea = "@Url.Action("Seguimiento_Fisico", "Seguimiento")"
+                const ficha = "@Url.Action("GenerarFicha", "Seguimiento")"
+                lista.forEach((item) => {
+                    html += `
+                    <tr>
+                        <td>${item.Codigo_Actividad}</td>
+                        <td><b>${item.Codigo_Finalidad_Presupuestal}</b></td>
+                        <td><b>${item.Codigo_Finalidad_Presupuestal}</b> ${item.Denominacion}</td>
+                        <td>${item.Descripcion_Objetivo}</td>
+                        <td>${item.Descripcion_Accion}</td>
+                        <td class="text-center">
+                            <a href="${urlTarea}?Id_Actividad=${item.Id_Actividad_Incrementable_Act}" class="btn btn-sm btn-secondary" title="Seguimiento Físico">
+                                <i class="fa fa-sign-in"></i>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a href="${ficha}?Id_Actividad=${item.Id_Actividad_Incrementable_Act}" class="btn btn-sm btn-success" title="Seguimiento Físico">
+                                <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    `;
+                });
+            }
+            return html;
+        }
+
+        $("#btnBuscar").click(Listar_Actividad_Operativa);
+
+        Listar_Actividad_Operativa();
+    </script>
+}

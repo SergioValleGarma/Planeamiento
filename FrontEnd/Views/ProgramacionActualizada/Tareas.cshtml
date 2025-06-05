@@ -1,0 +1,635 @@
+﻿@using Newtonsoft.Json
+@using FrontEnd.Models;
+
+@{
+    ViewBag.Title = "Tareas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var isSupervisor = GlobalConfig.isSupervisor;
+}
+
+@section styles
+{
+    <style>
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: #f2f2f2; /* Color de fondo para el encabezado */
+            z-index: 1; /* Para asegurarse de que el encabezado quede encima del contenido */
+        }
+
+        tr > th:nth-child(2) {
+            border-top-left-radius: 8px !important;
+        }
+
+        input[type='number'] {
+            -moz-appearance: textfield;
+            font-size: 0.8rem !important;
+        }
+
+        textarea {
+            font-size: 0.8rem !important;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+    </style>
+}
+
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6"><h3 class="mb-0">Tareas</h3></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-end">
+                    <li class="breadcrumb-item"><a href="#">Programación Actualizada</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Tareas</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="app-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-dark" role="alert">
+                    <ul class="p-2 m-0">
+                        <li class="fs-6">Unidad Orgánica: <b>@ViewBag.Dependencia</b></li>
+                        <li class="fs-6">Año: <b>@ViewBag.Anio</b></li>
+                        <li class="fs-6">Id de Actividad Operativa: <b>@ViewBag.Codigo_Actividad</b></li>
+                        <li class="fs-6">Denominacion: <b>@ViewBag.Denominacion</b></li>
+                    </ul>
+                </div>
+                <section class="mt-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="fw-bold">Tareas de la Actividad Operativa</h5>
+
+
+                        @* Si es supervisor, NO puede realizar estas acciones*@
+                        @if (!isSupervisor)
+                        {
+                            <button class="btn btn-sm btn-dark" id="btn-agregar">Agregar Fila</button>
+                        }
+                    </div>
+                    <input type="text" class="form-control d-none" id="Id_Actividad" value="@ViewBag.Id_Actividad" disabled />
+                    <div class="table-responsive overflow-auto mt-2 w-100" style="max-height: 480px">
+                        <table class="table table-striped-columns table-responsive" style="width: 100%; white-space: nowrap;" id="tbl-tareas">
+                            <colgroup>
+                                <col span="1" style="width: 12%;">
+                                <col span="1" style="width: 6%;">
+                                <col span="1" style="width: 6%;">
+
+                                <!-- Siguientes 12 columnas: Mediano-grandes -->
+                                <col span="12" style="width: 4.8%;">
+
+                                <!-- Últimas 3 columnas: Pequeñas -->
+                                <col span="3" style="width: 2%;">
+
+                            </colgroup>
+                            <thead class="w-100">
+                                <tr>
+                                    <th class="d-none">Id_Tarea</th>
+                                    <th>Desagregación</th>
+                                    <th>Código de Proceso</th>
+                                    <th>Unidad de Medida</th>
+                                    <th>Ene</th>
+                                    <th>Feb</th>
+                                    <th>Mar</th>
+                                    <th>Abr</th>
+                                    <th>May</th>
+                                    <th>Jun</th>
+                                    <th>Jul</th>
+                                    <th>Ago</th>
+                                    <th>Set</th>
+                                    <th>Oct</th>
+                                    <th>Nov</th>
+                                    <th>Dic</th>
+                                    <th>Total</th>
+                                    <th>CEPLAN</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-end mt-4 gap-3 mt-4">
+                        <a href="@Url.Action("Index")" class="btn btn-sm btn-secondary mr-2">Regresar</a>
+                        <a href="@Url.Action("Programacion_Financiera_Actualizada", "ProgramacionActualizada", new { Id_Actividad = ViewBag.Id_Actividad })" class="btn btn-sm btn-secondary">Siguiente</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script type="text/javascript">
+        const isSupervisor = @Html.Raw(JsonConvert.SerializeObject(isSupervisor));
+
+        $(document).ready(function () {
+            const table_tareas = document.querySelector("#tbl-tareas");
+            const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"];
+            const mesesBloqueados = @Html.Raw(JsonConvert.SerializeObject(ViewBag.MesesBloqueados));
+
+            function listarTareas() {
+                const params = { Id_Actividad: $("#Id_Actividad").val()}
+                $.ajax({
+                        url: '@Url.Action("Listar_Tareas", "ProgramacionActualizada")',
+                        beforeSend: function () {
+                            $('#loading').modal('show');
+                        },
+                        contentType: "application/json",
+                        dataType: "json",
+                        type: 'POST',
+                        data: JSON.stringify(params),
+                        success: function (response) {
+                            if (!response.success) return;
+
+                            if (!response.data.length) {
+                                toastr.info("No hay tareas disponibles");
+                            }
+
+                            response.data.map(row => table_tareas.querySelector("tbody").append(buildRow(row)));
+                        },
+                        error: function (jqXhr, textStatus, errorMessage) {
+                            console.log("Error: ", errorMessage);
+                        },
+                        complete: function () {
+                            $('#loading').modal('hide');
+                        }
+                    });
+            }
+
+            function listarUnidadMedida(element) {
+                $(element).find("select").select2({
+                width: '150px',
+                allowClear: true,
+                placeholder: "--TODOS--",
+                    ajax: {
+                        type: "POST",
+                        url: '@Url.Action("ListarUnidadMedidaPaginacion", "ProgramacionActualizada")',
+                        setTimeout:5000,
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                vBuscar: params.term,
+                                viewRows: 30,
+                                page: params.page
+                            };
+                        },
+                        success: function (data) {
+                            var data = $.map(data.item, function (obj) {
+                                obj.id = obj.id || obj.iCodUnidadMedida;
+                                obj.text = obj.text || obj.nvDescripcion;
+                                return obj;
+                            });
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            if (jqXHR.statusText === "parsererror") {
+                                $(location).attr('href', '@Url.Action("Logout", "Account")')
+                            }
+                            console.log(jqXHR)
+                            console.log(textStatus)
+                            console.log(errorThrown)
+                        },
+                        processResults: function (data, params) {
+                            params.page = params.page || 1;
+
+                            return {
+                                results: data.item,
+                                pagination: {
+                                    more: true
+                                }
+                            };
+                        },
+                        cache: true
+                    },
+                    placeholder: "--TODOS--",
+                });
+            }
+
+            function listarProceso(element) {
+                $(element).find("select").select2({
+                width: '150px',
+                allowClear: true,
+                placeholder: "--TODOS--",
+                    ajax: {
+                        type: "POST",
+                        url: '@Url.Action("ListarProcesoPaginacion", "ProgramacionActualizada")',
+                        setTimeout:5000,
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                vBuscar: params.term,
+                                viewRows: 30,
+                                page: params.page
+                            };
+                        },
+                        success: function (data) {
+                            var data = $.map(data.item, function (obj) {
+                                obj.id = obj.id || obj.iCodProceso;
+                                obj.text = obj.text || obj.nvDescripcion;
+                                return obj;
+                            });
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            if (jqXHR.statusText === "parsererror") {
+                                $(location).attr('href', '@Url.Action("Logout", "Account")')
+                            }
+                            console.log(jqXHR)
+                            console.log(textStatus)
+                            console.log(errorThrown)
+                        },
+                        processResults: function (data, params) {
+                            params.page = params.page || 1;
+
+                            return {
+                                results: data.item,
+                                pagination: {
+                                    more: true
+                                }
+                            };
+                        },
+                        cache: true
+                    },
+                    placeholder: "--TODOS--",
+            });
+            }
+
+            function buildRow(tarea = null) {
+                const row = document.createElement("tr");
+                const editable = tarea ? "disabled" : "";
+
+                row.className += !tarea ? "fila-nueva table-active table-success" : "";
+                row.innerHTML = "";
+                row.innerHTML += `
+                    <td class="d-none Id_Tarea_Row">${tarea?.Id_Tarea ?? 0}</td>
+                    <td>
+                        <textarea class="form-control desagregacion edit-input w-100" ${editable}>${tarea?.Desagregacion ?? ""}</textarea>
+                    </td>
+                    <td class="proceso text-wrap" data-id="${tarea?.Id_Proceso ?? ""}">${tarea?.Proceso ?? ""}</td>
+                    <td class="unidad_medida text-wrap" data-id="${tarea?.Cod_Unidad_Medida ?? ""}">${tarea?.Unidad_Medida ?? ""}</td>
+                    ${meses.map((mes, index) => {
+                        const mesBloqueado = mesesBloqueados.find((obj) => obj.Mes == index + 1)?.Bloqueado ? "disabled" : "";
+                        return `<td>
+                            <input
+                                class="valores-fila w-100 form-control edit-input"
+                                data-mes="${index + 1}"
+                                type="number"
+                                min="0"
+                                data-maxlength="6"
+                                ${editable}
+                                oninput="this.value=this.value.slice(0,this.dataset.maxlength)"
+                                value="${tarea ? tarea[mes] : 0}"
+                                ${tarea ? "" : mesBloqueado}/>
+                        </td>`}).join("")}
+                    <td class="total-fila fw-bold">${ tarea?.Total ?? 0 }</td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input
+                                class="form-check-input CePlan edit-input"
+                                type="checkbox"
+                                role="switch"
+                                id=""
+                                ${editable}
+                                ${tarea?.CePlan ? "checked" : "" }>
+                        </div>
+                    </td>
+                    <td class="contenedor-botones">
+                    ${!isSupervisor && tarea ?
+                        `<div>
+                            <button class="btn btn-sm btn-secondary btn-editTarea" >
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-secondary btn-deleteTarea" >
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>`
+                        : ""
+                    }
+                    </td>
+                `;
+
+                if (!tarea) {
+                    buildEditionButtons(row);
+                    row.querySelector("td:nth-child(2) textarea").focus();
+                }
+
+                return row;
+            }
+
+            function buildButton(clase, titulo, iconoHTML, onClick) {
+                const btn = document.createElement("button");
+                btn.className = clase;
+                btn.setAttribute("title", titulo);
+                btn.innerHTML = iconoHTML;
+                btn.onclick = onClick;
+                return btn;
+            }
+
+            function buildEditionButtons(row, copyRow = null) {
+                const rowActions = row.querySelector(".contenedor-botones");
+                const div = document.createElement("div");
+                div.setAttribute("class", "d-flex");
+
+                rowActions.innerHTML = "";
+
+                const btnGuardar = buildButton(
+                    "btn btn-sm btn-secondary me-1",
+                    "Guardar Fila",
+                    `<i class="fa fa-floppy-o"></i>`,
+                    () => guardarEdicion(row)
+                );
+
+                const btnCancelar = buildButton(
+                    "btn btn-sm btn-secondary",
+                    "Cancelar Edición",
+                    `<i class="fa fa-times"></i>`,
+                    () => (copyRow ? cancelarEdicion(copyRow) : cancelNewRow())
+                );
+
+                div.append(btnGuardar, btnCancelar);
+                rowActions.append(div);
+            }
+
+            function addNewRow() {
+                if (document.querySelector(".fila-nueva")) {
+                    toastr.info("Ya existe una fila nueva");
+                    return;
+                }
+
+                if (document.querySelector(".isEditing")) {
+                    toastr.info("Termine de editar la fila para realizar más acciones");
+                    return;
+                }
+
+                const row = buildRow();
+                table_tareas.querySelector("tbody").append(row);
+
+                buildSelections(row);
+            }
+
+            function buildSelections(row) {
+                const unidad_medida = row.querySelector(".unidad_medida");
+                const unidad_medida_txt = unidad_medida.innerText;
+                unidad_medida.innerHTML = `<select class="unidad_medida-select" style="width: 100px"></select>`
+                listarUnidadMedida(unidad_medida);
+                $(unidad_medida).find('.select2-selection__placeholder').text(unidad_medida_txt);
+
+                const proceso = row.querySelector(".proceso");
+                const proceso_txt = proceso.innerText;
+                proceso.innerHTML = `<select class="proceso-select" style="width: 100px"></select>`
+                listarProceso(proceso);
+                $(proceso).find('.select2-selection__placeholder').text(proceso_txt);
+            }
+
+            function buildButtons(row) {
+                const filaAcciones = row.querySelector(".contenedor-botones");
+                filaAcciones.innerHTML = `
+                <div>
+                    <button class="btn btn-sm btn-secondary btn-editTarea" >
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-secondary btn-deleteTarea" >
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+                `;
+            }
+
+            function guardarEdicion(row) {
+
+                const Filameses = [...row.querySelectorAll("[data-mes]")];
+                const Id_Actividad = document.querySelector("#Id_Actividad").value;
+                const Id_Tarea = row.querySelector(".Id_Tarea_Row").innerText;
+                const desagregacion = row.querySelector(".desagregacion").value;
+                const proceso = row.querySelector(".proceso select").value;
+                const proceso_prev = row.querySelector(".proceso").getAttribute("data-id");
+                const unidad_medida = row.querySelector(".unidad_medida select").value;
+                const unidad_medida_prev = row.querySelector(".unidad_medida").getAttribute("data-id");
+                const cePlan = row.querySelector(".CePlan").checked;
+                const listaMeses = Filameses.map((item) => {
+                    return {
+                        Mes: item.getAttribute("data-mes"),
+                        Cantidad: item.value
+                    };
+                });
+
+                const model = {
+                    Id_Actividad: Id_Actividad,
+                    Id_Tarea: Id_Tarea,
+                    Desagregacion: desagregacion,
+                    Codigo_Proceso: !proceso ? proceso_prev : proceso,
+                    Codigo_Unidad_Medida: !unidad_medida ? unidad_medida_prev : unidad_medida,
+                    CePlan: cePlan,
+                    listaMeses: listaMeses
+                }
+
+                $.ajax({
+                url: '@Url.Action("Crear_Tarea", "ProgramacionActualizada")',
+                beforeSend: function () {
+                    $('#loading').modal('show');
+                },
+                contentType: "application/json",
+                dataType: "json",
+                type: 'POST',
+                data: JSON.stringify(model),
+                success: function (response) {
+                        if (!response.success) {
+                            response.errors.forEach(({ Errors }) => {
+                                Errors.forEach(error => {
+                                    toastr.error(error)
+                                });
+                            });
+                            return;
+                        }
+
+                    if (response.data.Status == "error") {
+                        toastr.error(response.data.Message);
+                        return;
+                    }
+
+                    toastr.success(response.data.Message);
+
+                    row.querySelector(".Id_Tarea_Row").innerText = response.data.Codigo_Registro;
+
+                    row.classList.remove(...row.classList);
+                    removerSeleccionables(row)
+                    toogleEdition(row, false);
+                    buildButtons(row);
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    console.log("Error: ", errorMessage);
+                },
+                complete: function () {
+                    $('#loading').modal('hide');
+                }
+            });
+            }
+
+            function cancelNewRow() {
+                document.querySelector(".fila-nueva")?.remove();
+            }
+
+            function editRow(event) {
+                if (
+                    document.querySelector(".fila-nueva") ||
+                    document.querySelector(".isEditing")
+                ) {
+                    toastr.info("Termine de editar la fila para realizar más acciones");
+                    return;
+                }
+
+                const row = event.target.closest("tr");
+                const rowCopy = row.cloneNode(true);
+
+                buildSelections(row);
+
+                row.classList.add("table-active", "table-info", "isEditing");
+
+                buildEditionButtons(row, rowCopy);
+                toogleEdition(row, isEditable = true);
+            }
+
+            function Desactivar_Tarea(event) {
+                if (
+                    document.querySelector(".fila-nueva") ||
+                    document.querySelector(".isEditing")
+                ) {
+                    toastr.info("Termine de editar la fila para realizar más acciones");
+                    return;
+                }
+
+                const row = event.target.closest("tr");
+                const Id_Tarea = row.querySelector(".Id_Tarea_Row").innerText;
+                swal({
+                    title: "¿Estás seguro que deseas desactivar la tarea?",
+                    text: "¡Usted ya no podrá recuperar la tarea!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Si, deseo desactivarlo!"
+                }, function () {
+                    $.ajax({
+                        url: '@Url.Action("Desactivar_Tarea", "ProgramacionActualizada")',
+                        beforeSend: function () {
+                            $('#loading').modal('show');
+                        },
+                        content: "application/json; charset=utf-8",
+                        dataType: "json",
+                        type: 'POST',
+                        data: {
+                            iCodTarea: Id_Tarea
+                        },
+                        success: function (response) {
+                            if (!response.success) {
+                                toastr.error(response.data);
+                                return;
+                            }
+
+                            if (response.data.Status == "error") {
+                                toastr.error(response.data.Message);
+                                return;
+                            }
+
+                            toastr.success(response.data.Message);
+                            row?.remove();
+                        },
+                        error: function (jqXhr, textStatus, errorMessage) {
+                            console.log("Error: ", errorMessage);
+                        },
+                        complete: function () {
+                            $('#loading').modal('hide');
+                        }
+                    });
+                });
+            }
+
+            function toogleEdition(row, isEditable) {
+                row.querySelectorAll(".edit-input").forEach((element) => {
+                    const dataMes = element.getAttribute("data-mes")
+                    if (!dataMes) {
+                        element.toggleAttribute("disabled", !isEditable);
+                    }
+
+                    // Busca si el mes está bloqueado
+                    const bloqueado = mesesBloqueados.some(({ Mes, Bloqueado }) => Mes == dataMes && Bloqueado);
+
+                    // Deshabilita si el mes está bloqueado o si no es editable
+                    element.toggleAttribute("disabled", bloqueado || !isEditable);
+                });
+            }
+
+            function cancelarEdicion(copyRow) {
+                const row = document.querySelector(".isEditing");
+                if (!row) return;
+
+                row.parentNode.replaceChild(copyRow, row);
+                row.querySelector(".contenedor-botones").innerHTML = buildButtons(row);
+            }
+
+            function removerSeleccionables(fila) {
+                const unidadMedidaContenedor = fila.querySelector(".unidad_medida");
+                const unidadMedidaPlaceholder = unidadMedidaContenedor.querySelector(".select2-selection__placeholder")?.innerText ?? "";
+                const unidadMedidaSelect2 = $(unidadMedidaContenedor).find("select").select2("data")[0];
+                const unidadSeleccionadaTexto = unidadMedidaSelect2?.text ?? unidadMedidaPlaceholder;
+                const unidadSeleccionadaId = unidadMedidaSelect2?.id;
+                if (unidadSeleccionadaId) unidadMedidaContenedor.setAttribute("data-id", unidadSeleccionadaId);
+                unidadMedidaContenedor.innerHTML = unidadSeleccionadaTexto;
+
+                const procesoContenedor = fila.querySelector(".proceso");
+                const procesoPlaceholder = procesoContenedor.querySelector(".select2-selection__placeholder")?.innerText ?? "";
+                const procesoSelect2 = $(procesoContenedor).find("select").select2("data")[0];
+                const procesoSeleccionadaTexto = procesoSelect2?.text ?? procesoPlaceholder;
+                const procesoSeleccionadaId = procesoSelect2?.id;
+                if (procesoSeleccionadaId) procesoContenedor.setAttribute("data-id", procesoSeleccionadaId);
+                procesoContenedor.innerHTML = procesoSeleccionadaTexto;
+            }
+
+            function manejarNumeros(elemento) {
+                const row = elemento.closest("tr");
+                const totalRow = row.querySelector(".total-fila");
+
+                calcularTotal(row, totalRow);
+            }
+
+            function calcularTotal(row, totalRow) {
+                const total = Array.from(row.querySelectorAll('input[type="number"]')).reduce(
+                    (acc, valor) => acc + (parseInt(valor.value, 10) || 0),
+                    0
+                );
+
+                totalRow.innerText = total;
+            }
+
+            $(document).on('click', '#btn-agregar', function () {
+                addNewRow();
+            });
+
+            $(document).on('click', '.btn-editTarea', function (event) {
+                editRow(event);
+            });
+
+            $(document).on('click', '.btn-deleteTarea', function (event) {
+                Desactivar_Tarea(event);
+            });
+
+            $(document).on("input", 'input[type="number"]', function (e) {
+                // Bloquea caracteres no numéricos (solo números positivos enteros)
+                this.value = this.value.replace(/[^0-9]/g, "");
+                // Llama a manejarNumeros para actualizar el total en tiempo real
+                manejarNumeros(this);
+            });
+
+            listarTareas();
+        })
+    </script>
+}

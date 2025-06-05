@@ -1,0 +1,24 @@
+﻿* {
+    font-family: "Inter", sans-serif;
+}
+
+tr > th:first-child {
+    border-top-left-radius: 8px !important;
+}
+
+tr > th:last-child {
+    border-top-right-radius: 8px !important;
+}
+
+tr > th {
+    padding: 15px 5px !important;
+}
+
+tr > td {
+    background-color: #f5f5f5 !important;
+    padding: 25px 5px !important; /* Ajusta el valor según tus necesidades */
+    vertical-align: middle;
+    font-size: 14px;
+    height: 100%;
+}
+

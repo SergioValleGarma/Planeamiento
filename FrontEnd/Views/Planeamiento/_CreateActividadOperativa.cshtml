@@ -1,0 +1,142 @@
+﻿@model Common.ViewModels.ActividadOperativaCreateViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="modal fade" id="actividadOperativaModal" tabindex="-1" aria-labelledby="actividadOperativaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary text-white">
+                <h1 class="modal-title fs-5" id="actividadOperativaModalLabel">
+                    @(Model.Codigo_Actividad_Incrementable == 0 ? "Registrar" : "Actualizar") Actividad Operativa
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createActividadForm" action="@Url.Action("Create_Actividad_Operativa", "Planeamiento")" method="post">
+                    @Html.AntiForgeryToken()
+
+                    @Html.TextBoxFor(m => m.Codigo_Actividad_Incrementable, new { @class = "d-none" })
+                    @Html.TextBoxFor(m => m.Cod_Unidad_Organica, new { @class = "d-none" })
+                    @Html.TextBoxFor(m => m.nAnio, new { @class = "d-none" })
+
+                    <div class="mb-3">
+                        <label class="form-label">Unidad Orgánica</label>
+                        @Html.DropDownList("Cod_Unidad_Organica", ViewBag.Dependencia as SelectList, "--Seleccionar--", new { @class = "form-select", @style = "pointer-events: none;" })
+                        <p class="error-message text-danger"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Año</label>
+                        @Html.TextBoxFor(m => m.nAnio, new { @class = "form-control", @readonly = "readonly" })
+                        <p class="error-message text-danger"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">N° de Actividad</label>
+                        <select id="Id_Codigo_Actividad_Cat" name="Id_Codigo_Actividad_Cat" class="form-select">
+                            <option value="">--Seleccionar--</option>
+                            @foreach (var listItem in ViewBag.CodigoActividadOperativa)
+                            {
+                                <option value="@listItem.Value" @(listItem.Selected ? "selected" : "")>
+                                    @listItem.Text
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Finalidad Presupuestal</label>
+                        @Html.TextBoxFor(m => m.Codigo_Finalidad_Presupuestal, new { @class = "form-control" })
+                        <p class="error-message text-danger"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Denominación de la Actividad Operativa</label>
+                        @Html.TextBoxFor(m => m.Denominacion, new { @class = "form-control" })
+                        <p class="error-message text-danger"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Unidad de Medida</label>
+                        <select id="Id_Unidad_Medida" name="Id_Unidad_Medida">
+                            @if (Model.Id_Unidad_Medida != 0)
+                            {
+                                <option value="@Model.Id_Unidad_Medida" selected>@Model.Unidad_Medida</option>
+                            }
+                        </select>
+                        <p class="error-message text-danger"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Objetivo Estratégico</label>
+                        @Html.DropDownList("Cod_Objetivo_Est", ViewBag.Objetivos as SelectList, "--Seleccionar--", new { @class = "form-select" })
+                        <p class="error-message text-danger"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Acción Estratégico</label>
+                        @Html.DropDownList("Cod_Accion_Est", ViewBag.Acciones as SelectList, "--Seleccionar--", new { @class = "form-select" })
+                        <p class="error-message text-danger"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Descripción</label>
+                        @Html.TextAreaFor(m => m.Descripcion_Actividad, new { @class = "form-control", rows = 10 })
+                        <p class="error-message text-danger"></p>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-sm btn-dark">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#Id_Unidad_Medida").select2({
+            width: '100%',
+            allowClear: true,
+            tags: true,
+            dropdownParent: $("#actividadOperativaModal"),
+            ajax: {
+                type: "POST",
+                url: '@Url.Action("ListarUnidadMedidaPaginacion", "Planeamiento")',
+                setTimeout:5000,
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        vBuscar: params.term,
+                        viewRows: 30,
+                        page: params.page
+                    };
+                },
+                success: function (data) {
+                    var data = $.map(data.item, function (obj) {
+                        obj.id = obj.id || obj.iCodUnidadMedida;
+                        obj.text = obj.text || obj.nvDescripcion;
+                        return obj;
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.statusText === "parsererror") {
+                        $(location).attr('href', '@Url.Action("Logout", "Account")')
+                    }
+                    console.log(jqXHR)
+                    console.log(textStatus)
+                    console.log(errorThrown)
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: data.item,
+                        pagination: {
+                            more: (params.page * 15) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            placeholder: "--TODOS--",
+        });
+    });
+</script>

@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container d-flex mt-5">
+    <div class="card w-100">
+        <form method="post" onsubmit="uploadCargaFinanciera(event)">
+            <div class="card-body d-flex flex-column gap-2">
+                <div class="d-flex justify-content-between align-items-end">
+                    <div class="d-flex flex-column">
+                        <h5 class="card-title">Carga Financiera</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">Adjunte plantilla en excel con los campos correspondientes.</h6>
+                    </div>
+                    <a href="~/Archives/Plantilla_CargaFinanciera.xlsx" class="btn btn-success">Descargar Plantilla</a>
+                </div>
+                <div class="mb-3">
+                    <label for="cargaFile" class="form-label">Adjuntar Excel</label>
+                    <input class="form-control" type="file" name="cargaFile" id="cargaFile">
+                </div>
+                <button type="submit" class="btn btn-secondary w-100">Cargar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script type="text/javascript">
+        const uploadCargaFinanciera = (event) => {
+            event.preventDefault();
+
+            const { target: form } = event;
+            const formData = new FormData(form);
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': null,
+                },
+                body: formData
+            };
+
+            fetch('@Url.Action("Carga", "CargaFinanciera")', options)
+                .then((data) => {
+                    if (!data.ok) {
+                        throw Error(data.status);
+                    }
+                    return data.json();
+                }).then((data) => {
+                    console.log(data);
+                });
+
+            @*$.ajax({
+            url: '@Url.Action("Carga", "CargaFinanciera")',
+            beforeSend: function () {
+                $('#loading').modal('show');
+            },
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data, textStatus, jqXHR) {
+                const contentType = jqXHR.getResponseHeader('Content-Type');
+
+                if (contentType && contentType.includes("application/json")) {
+                    // If the response is a JSON (error response)
+                    const jsonResponse = JSON.parse(data);  // Parse the JSON response
+                    console.error("Error from server:", jsonResponse);
+                    alert(jsonResponse.message || "An error occurred while processing your request.");
+                } else {
+                    // If the response is a Blob (file)
+                    const fileURL = window.URL.createObjectURL(data);  // Convert the Blob to a URL
+
+                    // Create an anchor tag for downloading the file
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = fileURL;
+                    downloadLink.download = "Errores.xlsx";  // Set the filename dynamically
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                }
+            },
+            error: function (jqXhr, textStatus, errorMessage) {
+                console.log("Error: ", errorMessage);
+            },
+            complete: function () {
+                $('#loading').modal('hide');
+            }
+        });*@
+    };
+
+    </script>
+}

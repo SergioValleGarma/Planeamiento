@@ -1,0 +1,61 @@
+﻿@using Common.Auth;
+@using System.Configuration;
+@using FrontEnd.Models;
+
+@helper GetTreeMenus(List<ApiOpciones> siteMenu, ApiOpciones padre, bool useSymbol)
+{
+    var menuItems = siteMenu.Where(n => n.iGrupOpc.Equals(Convert.ToString(padre.iCodOpc))).OrderBy(n => n.iNroOrd).ToList();
+    var countItems = menuItems.Count();
+
+    string[] url = padre.vURL.Split('/');
+    string controller = url[0];
+    string action = url.Count() > 1 ? url[1] : "Index";
+    string redirection = padre.vURL == "#" ? "#" : Url.Action(action, controller);
+    <li class="nav-item">
+        <a href="@redirection" class="nav-link">
+            <i class="nav-icon @(padre.vIcon)"></i>
+            <p>@(padre.vNomOpc)</p>
+            @if (countItems != 0)
+            {
+                <i class="nav-arrow bi bi-chevron-right"></i>
+            }
+        </a>
+        @if (countItems != 0)
+        {
+            <ul class="nav nav-treeview">
+                @foreach (var m in menuItems)
+                {
+                    @GetTreeMenus(siteMenu, m, false)
+
+                }
+            </ul>
+        }
+    </li>
+}
+
+@{
+    List<ApiOpciones> opciones = FrontEnd.Seguridad.UserManager.Usuario.opciones;
+    string PerfilCoordinador = GlobalConfig.iCodCoordinador;
+    bool isCoordinador = GlobalConfig.isCoordinador;
+}
+
+<aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+    <div class="sidebar-brand">
+        <a href="#" class="brand-link">
+            <span class="brand-text fw-light">Planeamiento</span>
+        </a>
+    </div>
+    <div class="sidebar-wrapper">
+        <nav class="mt-2">
+            <ul class="nav sidebar-menu flex-column"
+                data-lte-toggle="treeview"
+                role="menu"
+                data-accordion="false">
+                @foreach (var i in opciones.Where(a => a.iGrupOpc.Equals("0")).OrderBy(n => n.iNroOrd))
+                {
+                    @GetTreeMenus(opciones, i, true)
+                }
+            </ul>
+        </nav>
+    </div>
+</aside>

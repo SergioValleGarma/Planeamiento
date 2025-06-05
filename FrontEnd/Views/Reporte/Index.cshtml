@@ -1,0 +1,149 @@
+﻿@using FrontEnd.Models;
+@using Common.ViewModels;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var isCoordinador = GlobalConfig.isCoordinador;
+    var isSupervisor = GlobalConfig.isSupervisor;
+    var isOperador = GlobalConfig.isOperador;
+
+    var unidadOrganica = isOperador ? GlobalConfig.unidadOrganica : TempData["unidadOrganica"] as string;
+    var dependencias = ViewBag.lstDependenciaGrouped as List<DependenciaViewModel>;
+
+    var listAnios = Helper.ListarAnios();
+    var listMeses = Helper.ListarMeses();
+}
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6"><h3 class="mb-0">Reporte</h3></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-end">
+                    <li class="breadcrumb-item"><a href="#">Reporte</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+        <div class="row">
+            @if (!isOperador)
+            {
+                <div class="col-md-12">
+                    <section class="card card-success mb-3">
+                        <h5 class="card-header">Exportar Base de Datos</h5>
+                        <div class="row card-body align-items-end">
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="ddlAnio" class="form-label">Periodo</label>
+                                    <select class="form-select" aria-label="" id="ddlAnio">
+                                        @foreach (var anio in listAnios)
+                                        {
+                                            <option value="@anio">@anio</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <button class="btn btn-primary mr-2" id="btnExportar">Exportar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            }
+
+            <div class="col-md-12">
+                <section class="card card-primary mb-3">
+                    <h5 class="card-header">Exporta Reporte</h5>
+                    <div class="row card-body align-items-end">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="ddlUnidadOrganica" class="form-label">Unidad de Organización Responsable</label>
+                                <select id="ddlUnidadOrganica" class="form-select" placeholder="Seleccionar Dependencia" @(!isOperador ? "" : "disabled") style="width: 100%;">
+                                    @if (!isOperador) 
+                                    { 
+                                        <option value="0">--TODAS LA UNIDADES--</option>
+                                    }
+                                    @foreach (var dependecia in dependencias)
+                                    {
+                                        <option value="@dependecia.iCodigoDependencia" @(dependecia.iCodigoDependencia.ToString() == unidadOrganica ? "selected" : "")>@dependecia.vDependencia</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                <label for="ddlAnio" class="form-label">Mes</label>
+                                <select class="form-select" aria-label="" id="ddlMes">
+                                    @for (int i = 0; i < listMeses.Count; i++)
+                                    {
+                                        <option value="@(i + 1)">@listMeses[i]</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                <label for="ddlAnio" class="form-label">Año</label>
+                                <select class="form-select" aria-label="" id="ddlAnio_Semaforo">
+                                    @foreach (var anio in listAnios)
+                                    {
+                                        <option value="@anio">@anio</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                <button class="btn btn-primary mr-2" id="btnExporteReporte">Exportar</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script type="text/javascript">
+        $("#ddlUnidadOrganica").select2();
+
+        toastr.options = {
+            "positionClass": "toast-bottom-full-width",
+            "preventDuplicates": true,
+        }
+
+        function GenerarReporteDB() {
+            const method = '@Url.Action("ExportarBD", "Reporte")';
+            const anio = $("#ddlAnio").val();
+            window.location.href = `${method}?anio=${anio}`
+        }
+
+        function GenerarReporteSemaforo() {
+            const method = '@Url.Action("GenerarReporte", "Reporte")';
+
+            const anio = $("#ddlAnio_Semaforo").val();
+            const Codigo_Dependencia = $("#ddlUnidadOrganica").val();
+            const nMes = $("#ddlMes").val();
+
+            if (!Codigo_Dependencia) {
+                toastr.error("Debe ingresar una Unidad Orgánica");
+                return;
+            }
+
+            window.location.href = `${method}?CodigoDependencia=${Codigo_Dependencia}&anio=${anio}&mes=${nMes}`;
+        }
+
+        $(document).on("click", "#btnExportar", GenerarReporteDB);
+        $(document).on("click", "#btnExporteReporte", GenerarReporteSemaforo);
+    </script>
+}

@@ -1,0 +1,43 @@
+﻿@model Common.ViewModels.CabeceraActividadOperativaCreateViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="modal fade" id="actividadOperativaModal" tabindex="-1" aria-labelledby="actividadOperativaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary text-white">
+                <h1 class="modal-title fs-5" id="actividadOperativaModalLabel">
+                   Registrar Código Actividad Operativa
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createActividadForm" action="@Url.Action("Create_Codigo_Actividad_Operativa", "Planeamiento")" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label class="form-label">Año</label>
+                        @Html.TextBoxFor(m => m.nAnio, new { @class = "form-control", @readonly = "readonly" })
+                        <p class="error-message text-danger"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Unidad Orgánica</label>
+                        @Html.DropDownList("Catalogo_AO_Codigo_Dependencia", ViewBag.Dependencia as SelectList, "--Seleccionar--", new { @class = "form-select", @style = "pointer-events: none;" })
+                        <p class="error-message text-danger"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">N° de Actividad</label>
+                        @Html.TextBoxFor(m => m.Numero_Actividad, new { @class = "form-control" })
+                        <p class="error-message text-danger"></p>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-sm btn-dark">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

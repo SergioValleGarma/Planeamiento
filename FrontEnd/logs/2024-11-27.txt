@@ -1,0 +1,23 @@
+2024-11-27 16:02:51,697 [7] ERROR App  
+ System.InvalidOperationException: Se proporcionó un URI de solicitud no válido. El URI de solicitud debe ser un URI absoluto o debe establecerse BaseAddress.
+   en System.Net.Http.HttpClient.PrepareRequestMessage(HttpRequestMessage request)
+   en System.Net.Http.HttpClient.SendAsync(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationToken cancellationToken)
+   en System.Net.Http.HttpClient.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   en System.Net.Http.HttpClient.PostAsync(Uri requestUri, HttpContent content, CancellationToken cancellationToken)
+   en System.Net.Http.HttpClient.PostAsync(String requestUri, HttpContent content)
+   en FrontEnd.Controllers.AccountController.<Connect>d__4.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 96 
+ 
+2024-11-27 16:07:46,369 [8] ERROR App  
+ System.ArgumentNullException: El valor no puede ser nulo.
+Nombre del parámetro: value
+   en System.Security.Claims.Claim..ctor(String type, String value, String valueType, String issuer, String originalIssuer, ClaimsIdentity subject, String propertyKey, String propertyValue)
+   en System.Security.Claims.Claim..ctor(String type, String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__4.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 62 
+ 
+2024-11-27 16:07:55,233 [6] ERROR App  
+ System.ArgumentNullException: El valor no puede ser nulo.
+Nombre del parámetro: value
+   en System.Security.Claims.Claim..ctor(String type, String value, String valueType, String issuer, String originalIssuer, ClaimsIdentity subject, String propertyKey, String propertyValue)
+   en System.Security.Claims.Claim..ctor(String type, String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__4.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 62 
+ 

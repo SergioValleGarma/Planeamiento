@@ -1,0 +1,498 @@
+﻿
+@{
+    ViewBag.Title = "PlanFinanciero";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Id_Actividad = ViewBag.Id_Actividad;
+}
+
+@section styles
+{
+    <style>
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: #f2f2f2;
+            z-index: 1;
+        }
+
+        tr > th {
+            border-radius: 0px !important;
+        }
+    </style>
+}
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6"><h3 class="mb-0">Plan Financiero</h3></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-end">
+                    <li class="breadcrumb-item"><a href="#">Programación Inicial</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Plan Financiero</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="app-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-dark" role="alert">
+                    <ul class="p-2 m-0">
+                        <li class="fs-6">Unidad Orgánica: <b>@ViewBag.Dependencia</b></li>
+                        <li class="fs-6">Año: <b>@ViewBag.Anio</b></li>
+                        <li class="fs-6">Id de Actividad Operativa: <b>@ViewBag.Codigo_Actividad</b></li>
+                        <li class="fs-6">Denominacion: <b>@ViewBag.Denominacion</b></li>
+                    </ul>
+                </div>
+
+                <section class="mt-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="fw-bold">Programación Financiera Detallada</h5>
+                        <div class="d-flex gap-2 justify-content-end">
+                            <div class="alert alert-success mr-2" role="alert">
+                                Total PIA: <b id="nTotalPIA">@ViewBag.TotalPIA</b>
+                            </div>
+                            <div class="alert alert-warning mr-2">
+                                Usado: <b id="nTotalUsado">@ViewBag.TotalUsado</b>
+                            </div>
+                            <div class="alert alert-danger mr-2" role="alert">
+                                Restante: <b id="nRestante">@(ViewBag.TotalPIA - ViewBag.TotalUsado)</b>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control d-none" id="Id_Actividad" value="@ViewBag.Id_Actividad" disabled />
+                    <input type="text" class="form-control d-none" id="nAnio" value="@ViewBag.Anio" disabled />
+                    <div class="table-responsive overflow-auto mt-2" style="max-height: 480px">
+                        <table class="table table-striped-columns table-responsive" id="tbl-programacion">
+                            <thead class="">
+                                <tr>
+                                    <th class="d-none">Id_Programacion</th>
+                                    <th>Categoria Presupuestal</th>
+                                    <th>Producto / Proyecto</th>
+                                    <th>Actividad Presupuestal</th>
+                                    <th>Finalidad Presupuestal</th>
+                                    <th>Generica de Gasto</th>
+                                    <th>Específica</th>
+                                    <th>Techo PIA</th>
+                                    <th>Techo Actividad Operativa</th>
+                                    <th>Ene</th>
+                                    <th>Feb</th>
+                                    <th>Mar</th>
+                                    <th>Abr</th>
+                                    <th>May</th>
+                                    <th>Jun</th>
+                                    <th>Jul</th>
+                                    <th>Ago</th>
+                                    <th>Set</th>
+                                    <th>Oct</th>
+                                    <th>Nov</th>
+                                    <th>Dic</th>
+                                    <th>Total</th>
+                                    <th>Falta Registrar</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-3 mt-4">
+                        <a href="@Url.Action("Tareas", "Planeamiento", new { Id_Actividad = Id_Actividad })" class="btn btn-sm btn-secondary mr-2">Regresar</a>
+                        <a href="@Url.Action("GenerarFicha", "Planeamiento", new { Id_Actividad = Id_Actividad })" class="btn btn-sm btn-dark">Generar Excel</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        toastr.options = {
+            "positionClass": "toast-bottom-full-width",
+            "preventDuplicates": true,
+        }
+
+        function Desactivar_Programacion(element) {
+            if (
+                document.querySelector(".fila-nueva") ||
+                document.querySelector(".isEditing")
+            ) {
+                toastr.info("Termine de editar la fila para realizar más acciones");
+                return;
+            }
+
+            const fila = element.closest("tr");
+            const Id_Proramacion = +fila.querySelector(".Id_Prog_Row")?.innerText;
+            const Id_Actividad = document.querySelector("#Id_Actividad").value;
+            swal({
+                title: "¿Estás seguro que deseas desactivar la programación?",
+                text: "¡Usted ya no podrá recuperar la programación!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si, deseo desactivarlo!"
+            }, function () {
+                $.ajax({
+                    url: '@Url.Action("Desactivar_Programacion", "Planeamiento")',
+                    beforeSend: function () {
+                        $('#loading').modal('show');
+                    },
+                    content: "application/json; charset=utf-8",
+                    dataType: "json",
+                    type: 'POST',
+                    data: {
+                        iCodProgramacion: Id_Proramacion
+                    },
+                    success: function (response) {
+                        if (!response.success) {
+                            toastr.error(response.data);
+                            return;
+                        }
+
+                        if (response.data.Status == "error") {
+                            toastr.error(response.data.Message);
+                            return;
+                        }
+
+                        toastr.success(response.data.Message);
+                        fila?.remove();
+                        consultarTotales(Id_Actividad);
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        console.log("Error: ", errorMessage);
+                    },
+                    complete: function () {
+                        $('#loading').modal('hide');
+                    }
+                });
+            });
+        }
+
+        const table_programacion = document.querySelector("#tbl-programacion");
+
+        function listarProgramacion() {
+            const params = {
+                Id_Actividad: $("#Id_Actividad").val(),
+                nAnio: $("#nAnio").val()
+            }
+            $.ajax({
+                    url: '@Url.Action("Listar_Programacion", "Planeamiento")',
+                    beforeSend: function () {
+                        //$('#loading').modal('show');
+                    },
+                    contentType: "application/json",
+                    dataType: "json",
+                    type: 'POST',
+                    data: JSON.stringify(params),
+                    success: function (response) {
+                        if (!response.success) return;
+
+                        if (!response.data.length) {
+                            table_programacion.querySelector("tbody").innerHTML = "<tr><td class='text-center' colspan='22'>No hay información</td></tr>"
+                        } else {
+                            response.data.forEach(row => construirFila(row));
+                        }
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        console.log("Error: ", errorMessage);
+                    },
+                    complete: function () {
+                        //$('#loading').modal('hide');
+                    }
+                });
+        }
+
+        function editarFila(event) {
+            if (
+                document.querySelector(".fila-nueva") ||
+                document.querySelector(".isEditing")
+            ) {
+                toastr.info("Termine de editar la fila para realizar más acciones");
+                return;
+            }
+
+            const fila = event.target.closest("tr");
+            const filaCopia = fila.cloneNode(true);
+
+            fila.classList.add("table-active", "table-info", "isEditing");
+
+            construirBotonesEdicion(fila, filaCopia);
+            toggleContentEditable(fila, true);
+        }
+
+        function guardarEdicion(fila) {
+            const FaltaRegistrar = parseFloat(fila.querySelector(".falta-registrar").innerText);
+
+            if (FaltaRegistrar < 0) {
+                toastr.error("La suma de meses no debe superar el techo A.O.");
+                return;
+            }
+
+            const Filameses = [...fila.querySelectorAll("[data-mes]")];
+            const Id_Actividad = document.querySelector("#Id_Actividad").value;
+            const Id_Programacion = fila.querySelector(".Id_Prog_Row").innerText;
+            const TechoAO = fila.querySelector(".techoAO").innerText;
+            const listaMeses = Filameses.map((item) => {
+                return {
+                    Mes: item.getAttribute("data-mes"),
+                    Cantidad: parseFloat(item.innerText)
+                };
+            });
+
+            const model = {
+                Id_Programacion: Id_Programacion,
+                Id_Actividad: Id_Actividad,
+                Monto_ActividadOperativa: parseFloat(TechoAO),
+                listaMeses: listaMeses
+            }
+
+             $.ajax({
+                url: '@Url.Action("Actualizar_Programacion", "Planeamiento")',
+                beforeSend: function () {
+                    $('#loading').modal('show');
+                },
+                contentType: "application/json",
+                dataType: "json",
+                type: 'POST',
+                data: JSON.stringify(model),
+                success: function (response) {
+                        if (!response.success) {
+                            response.errors.forEach(({ Errors }) => {
+                                Errors.forEach(error => {
+                                    toastr.error(error)
+                                });
+                            });
+                            return;
+                        }
+
+                    if (response.data.Status == "error") {
+                        toastr.error(response.data.Message);
+                        return;
+                    }
+
+                    toastr.success(response.data.Message);
+
+                    fila.classList.remove(...fila.classList);
+                    toggleContentEditable(fila, false);
+                    construirBotones(fila);
+                    consultarTotales(Id_Actividad);
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    console.log("Error: ", errorMessage);
+                },
+                complete: function () {
+                    $('#loading').modal('hide');
+                }
+            });
+        }
+
+        function construirBotones(fila) {
+            const filaAcciones = fila.querySelector(".contenedor-botones");
+            filaAcciones.innerHTML = `
+                <div class="d-flex flex-column gap-1">
+                    <button class="btn btn-sm btn-secondary" onclick="editarFila(event)">
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        function construirFila(programacion = null) {
+            const FilaHTML = document.createElement("tr");
+            const contentEditable = programacion ? "false" : "plaintext-only";
+            const listMeses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"];
+
+            FilaHTML.innerHTML = "";
+            FilaHTML.innerHTML += `<td class="d-none Id_Prog_Row">${programacion?.Id_ProgramacionFinanciera ?? 0}</td>`
+            FilaHTML.innerHTML += `<td>${programacion?.Categoria_Presupuestal}</td>`;
+            FilaHTML.innerHTML += `<td>${programacion?.Producto}</td>`;
+            FilaHTML.innerHTML += `<td>${programacion?.Actividad_Presupuestal}</td>`;
+            FilaHTML.innerHTML += `<td>${programacion?.Finalidad_Presupuestal}</td>`;
+            FilaHTML.innerHTML += `<td>${programacion?.Generica_Gasto}</td>`;
+            FilaHTML.innerHTML += `<td>${programacion?.Clasificador_Completo}</td>`;
+            FilaHTML.innerHTML += `<td class="techoPIA">${programacion?.Monto_PIA}</td>`;
+            FilaHTML.innerHTML += `
+            <td><div contenteditable=${contentEditable} aria-multiline="true" role="textbox" tabindex="0" class="techoAO" spellcheck="true" dir="ltr" style="min-width:60px; max-width: 250px;">${programacion?.Monto_ActividadOperativa.toFixed(2)}</div></td>`;
+            FilaHTML.innerHTML += `${Array.from({ length: 12 }, (_, index) => `
+            <td><div contenteditable=${contentEditable} contenteditable="plaintext-only"  aria-multiline="true" role="textbox" tabindex="0" class="valores-fila" spellcheck="true" dir="ltr" data-mes="${index + 1}" style="min-width:60px; max-width: 250px;">${programacion ? programacion[listMeses[index]].toFixed(2) : 0}</div></td>`).join("")}`;
+            FilaHTML.innerHTML += `<td class="total-fila">${programacion?.Total.toFixed(2) ?? 0}</td>`;
+            FilaHTML.innerHTML += `<td class="falta-registrar text-danger fw-bold">${programacion.Falta_Registrar.toFixed(2)}</td>`;
+            //FilaHTML.innerHTML += `<td>
+            //    ${programacion
+            //    ? `<div class="contenedor-botones d-flex flex-column gap-1">
+            //            <button class="btn btn-sm btn-secondary" onclick="editarFila(event)">
+            //                <i class="fa fa-pencil"></i>
+            //            </button>
+            //        </div>`
+            //    : ""
+            //    }
+            //</td>`;
+
+            table_programacion.querySelector("tbody").append(FilaHTML);
+
+            if (!programacion) {
+                construirBotonesEdicion(FilaHTML)
+                FilaHTML.querySelector("td:nth-child(2) div").focus();
+            }
+        }
+
+        function fnIsEditable(isEditable) {
+            return isEditable ? "plaintext-only" : "false";
+        }
+
+        function construirBoton(clase, titulo, iconoHTML, onClick) {
+            const btn = document.createElement("button");
+            btn.className = clase;
+            btn.setAttribute("title", titulo);
+            btn.innerHTML = iconoHTML;
+            btn.onclick = onClick;
+            return btn;
+        }
+
+        function construirBotonesEdicion(fila, filaCopia = null) {
+            const filaAcciones = fila.querySelector(".contenedor-botones");
+
+            filaAcciones.innerHTML = "";
+
+            const btnGuardar = construirBoton(
+                "btn btn-sm btn-secondary",
+                "Guardar Fila",
+                `<i class="fa fa-floppy-o"></i>`,
+                () => guardarEdicion(fila)
+            );
+
+            const btnCancelar = construirBoton(
+                "btn btn-sm btn-secondary",
+                "Cancelar Edición",
+                `<i class="fa fa-times"></i>`,
+                () => (filaCopia ? cancelarEdicion(filaCopia) : cancelarNuevaFila())
+            );
+
+            filaAcciones.append(btnGuardar, btnCancelar);
+        }
+
+        function toggleContentEditable(fila, isEditable) {
+            fila.querySelectorAll("div[contenteditable]").forEach((div) => {
+                div.setAttribute("contenteditable", fnIsEditable(isEditable));
+                div.classList.toggle("py-2", isEditable);
+            });
+        }
+
+        function cancelarNuevaFila() {
+            document.querySelector(".fila-nueva")?.remove();
+        }
+
+        function cancelarEdicion(filaCopia) {
+            const fila = document.querySelector(".isEditing");
+            if (!fila) return;
+
+            fila.parentNode.replaceChild(filaCopia, fila);
+            fila.querySelector(".contenedor-botones").innerHTML = construirBotones(fila);
+        }
+
+        function consultarTotales(Id_Actividad) {
+            const model = { Id_Actividad };
+
+            $.ajax({
+                url: '@Url.Action("Consultar_Total", "Planeamiento")',
+                beforeSend: function () {
+                    $('#loading').modal('show');
+                },
+                contentType: "application/json",
+                dataType: "json",
+                type: 'POST',
+                data: JSON.stringify(model),
+                success: function (response) {
+                    if (!response.success) {
+                        response.errors.forEach(({ Errors }) => {
+                            Errors.forEach(error => {
+                                toastr.error(error)
+                            });
+                        });
+                        return;
+                    }
+
+                    const { TotalPIA, TotalUsado } = response.data;
+                    const $ntotalPIA = $("#ntotalPIA");
+                    const $nUsado = $("#nTotalUsado");
+                    const $nRestante = $("#nRestante");
+
+                    $ntotalPIA.text(TotalPIA.toFixed(2));
+                    $nUsado.text(TotalUsado.toFixed(2));
+                    $nRestante.text((TotalPIA - TotalUsado).toFixed(2));
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    console.log("Error: ", errorMessage);
+                },
+                complete: function () {
+                    $('#loading').modal('hide');
+                }
+            });
+
+        }
+
+        function calcularTotal(elemento) {
+            const fila = elemento.closest("tr");
+            const totalFila = fila.querySelector(".total-fila");
+
+            const total = Array.from(fila.querySelectorAll(".valores-fila")).reduce(
+                (acc, valor) => {
+                    // Limpiar y obtener el valor numérico
+                    let num = parseFloat(valor.innerText.trim()); // Elimina espacios en blanco alrededor
+                    return acc + (isNaN(num) ? 0 : num); // Si no es un número, sumamos 0
+                },
+                0
+            );
+
+            const elFaltaRegistrar = fila.querySelector(".falta-registrar");
+            const techoAO = parseFloat(fila.querySelector(".techoAO").innerText).toFixed(2);
+            const totalMeses = parseFloat(total).toFixed(2);
+            const faltaRegistrar = (techoAO - totalMeses)?.toFixed(2);
+
+            totalFila.innerText = totalMeses;
+            elFaltaRegistrar.innerText = isNaN(faltaRegistrar) ? 0 : faltaRegistrar;
+        }
+
+        function manejarEntradaNumerica(event) {
+            var x = event.which || event.keyCode;
+
+            if ((isNaN(String.fromCharCode(x)) && x !== 46) && x !== 8 || x == 13) {
+                event.preventDefault();  // Si no es un número, punto o backspace, prevenimos la acción
+            } else {
+                // Llamamos a la función para manejar el cambio
+                calcularTotal(event.target);
+            }
+        }
+
+        function manejarInputsNumericos(event) {
+            calcularTotal(event.target);
+        }
+
+        $(document).on("keypress", ".valores-fila", function (e) {
+            manejarEntradaNumerica(e);
+        });
+
+        $(document).on("input", ".valores-fila", function (e) {
+            manejarInputsNumericos(e);
+        });
+
+        $(document).on("keypress", ".techoAO", function (e) {
+            manejarEntradaNumerica(e);
+        });
+
+        $(document).on("input", ".techoAO", function (e) {
+            manejarInputsNumericos(e);
+        });
+
+        $(document).on("paste", "div[contenteditable]", function (e) {
+            e.preventDefault();
+        });
+
+        listarProgramacion();
+    </script>
+}

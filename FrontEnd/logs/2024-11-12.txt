@@ -1,0 +1,588 @@
+2024-11-12 15:42:45,209 [47] ERROR App  
+ System.IO.FileLoadException: No se puede cargar el archivo o ensamblado 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed' ni una de sus dependencias. La definición del manifiesto del ensamblado no coincide con la referencia al ensamblado. (Excepción de HRESULT: 0x80131040)
+Nombre de archivo: 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'
+   en System.ModuleHandle.ResolveType(RuntimeModule module, Int32 typeToken, IntPtr* typeInstArgs, Int32 typeInstCount, IntPtr* methodInstArgs, Int32 methodInstCount, ObjectHandleOnStack type)
+   en System.ModuleHandle.ResolveTypeHandleInternal(RuntimeModule module, Int32 typeToken, RuntimeTypeHandle[] typeInstantiationContext, RuntimeTypeHandle[] methodInstantiationContext)
+   en System.Reflection.RuntimeModule.ResolveType(Int32 metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+   en System.Reflection.CustomAttribute.FilterCustomAttributeRecord(CustomAttributeRecord caRecord, MetadataImport scope, Assembly& lastAptcaOkAssembly, RuntimeModule decoratedModule, MetadataToken decoratedToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, Object[] attributes, IList derivedAttributes, RuntimeType& attributeType, IRuntimeMethodInfo& ctor, Boolean& ctorHasParameters, Boolean& isVarArg)
+   en System.Reflection.CustomAttribute.IsCustomAttributeDefined(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, RuntimeType attributeFilterType, Int32 attributeCtorToken, Boolean mustBeInheritable)
+   en System.Reflection.CustomAttribute.IsDefined(RuntimePropertyInfo property, RuntimeType caType)
+   en System.Reflection.RuntimePropertyInfo.IsDefined(Type attributeType, Boolean inherit)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.GetSerializableMembers(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperties(Type type, MemberSerialization memberSerialization)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateObjectContract(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateContract(Type objectType)
+   en System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.ResolveContract(Type type)
+   en Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   en Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__3.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 61
+
+=== Información de estado anterior al enlace ===
+LOG: DisplayName = Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+ (Fully-specified)
+LOG: Appbase = file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/
+LOG: PrivatePath inicial = C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\bin
+Ensamblado de llamada : Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null.
+===
+LOG: Este enlace empieza en el contexto de carga default.
+LOG: Utilización del archivo de configuración de la aplicación: C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\web.config
+LOG: Utilizando el archivo de configuración de host: C:\Users\apoyo2_ogti\Documents\IISExpress\config\aspnet.config
+LOG: Utilizando el archivo de configuración del equipo en C:\Windows\Microsoft.NET\Framework\v4.0.30319\config\machine.config.
+LOG: Referencia posterior a la directiva: Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/bin/Newtonsoft.Json.DLL.
+AVS: Al comparar el nombre de ensamblado se generó la incompatibilidad: Versión principal
+ERR: Error al completar la instalación del ensamblado (hr = 0x80131040). Finalizó la búsqueda.
+ 
+ 
+2024-11-12 16:16:16,181 [8] ERROR App  
+ System.IO.FileLoadException: No se puede cargar el archivo o ensamblado 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed' ni una de sus dependencias. La definición del manifiesto del ensamblado no coincide con la referencia al ensamblado. (Excepción de HRESULT: 0x80131040)
+Nombre de archivo: 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'
+   en System.ModuleHandle.ResolveType(RuntimeModule module, Int32 typeToken, IntPtr* typeInstArgs, Int32 typeInstCount, IntPtr* methodInstArgs, Int32 methodInstCount, ObjectHandleOnStack type)
+   en System.ModuleHandle.ResolveTypeHandleInternal(RuntimeModule module, Int32 typeToken, RuntimeTypeHandle[] typeInstantiationContext, RuntimeTypeHandle[] methodInstantiationContext)
+   en System.Reflection.RuntimeModule.ResolveType(Int32 metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+   en System.Reflection.CustomAttribute.FilterCustomAttributeRecord(CustomAttributeRecord caRecord, MetadataImport scope, Assembly& lastAptcaOkAssembly, RuntimeModule decoratedModule, MetadataToken decoratedToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, Object[] attributes, IList derivedAttributes, RuntimeType& attributeType, IRuntimeMethodInfo& ctor, Boolean& ctorHasParameters, Boolean& isVarArg)
+   en System.Reflection.CustomAttribute.IsCustomAttributeDefined(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, RuntimeType attributeFilterType, Int32 attributeCtorToken, Boolean mustBeInheritable)
+   en System.Reflection.CustomAttribute.IsDefined(RuntimePropertyInfo property, RuntimeType caType)
+   en System.Reflection.RuntimePropertyInfo.IsDefined(Type attributeType, Boolean inherit)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.GetSerializableMembers(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperties(Type type, MemberSerialization memberSerialization)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateObjectContract(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateContract(Type objectType)
+   en System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.ResolveContract(Type type)
+   en Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   en Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__3.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 61
+
+=== Información de estado anterior al enlace ===
+LOG: DisplayName = Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+ (Fully-specified)
+LOG: Appbase = file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/
+LOG: PrivatePath inicial = C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\bin
+Ensamblado de llamada : Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null.
+===
+LOG: Este enlace empieza en el contexto de carga default.
+LOG: Utilización del archivo de configuración de la aplicación: C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\web.config
+LOG: Utilizando el archivo de configuración de host: C:\Users\apoyo2_ogti\Documents\IISExpress\config\aspnet.config
+LOG: Utilizando el archivo de configuración del equipo en C:\Windows\Microsoft.NET\Framework\v4.0.30319\config\machine.config.
+LOG: Referencia posterior a la directiva: Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/bin/Newtonsoft.Json.DLL.
+AVS: Al comparar el nombre de ensamblado se generó la incompatibilidad: Versión principal
+ERR: Error al completar la instalación del ensamblado (hr = 0x80131040). Finalizó la búsqueda.
+ 
+ 
+2024-11-12 16:26:26,601 [6] ERROR App  
+ System.IO.FileLoadException: No se puede cargar el archivo o ensamblado 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed' ni una de sus dependencias. La definición del manifiesto del ensamblado no coincide con la referencia al ensamblado. (Excepción de HRESULT: 0x80131040)
+Nombre de archivo: 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'
+   en System.ModuleHandle.ResolveType(RuntimeModule module, Int32 typeToken, IntPtr* typeInstArgs, Int32 typeInstCount, IntPtr* methodInstArgs, Int32 methodInstCount, ObjectHandleOnStack type)
+   en System.ModuleHandle.ResolveTypeHandleInternal(RuntimeModule module, Int32 typeToken, RuntimeTypeHandle[] typeInstantiationContext, RuntimeTypeHandle[] methodInstantiationContext)
+   en System.Reflection.RuntimeModule.ResolveType(Int32 metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+   en System.Reflection.CustomAttribute.FilterCustomAttributeRecord(CustomAttributeRecord caRecord, MetadataImport scope, Assembly& lastAptcaOkAssembly, RuntimeModule decoratedModule, MetadataToken decoratedToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, Object[] attributes, IList derivedAttributes, RuntimeType& attributeType, IRuntimeMethodInfo& ctor, Boolean& ctorHasParameters, Boolean& isVarArg)
+   en System.Reflection.CustomAttribute.IsCustomAttributeDefined(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, RuntimeType attributeFilterType, Int32 attributeCtorToken, Boolean mustBeInheritable)
+   en System.Reflection.CustomAttribute.IsDefined(RuntimePropertyInfo property, RuntimeType caType)
+   en System.Reflection.RuntimePropertyInfo.IsDefined(Type attributeType, Boolean inherit)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.GetSerializableMembers(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperties(Type type, MemberSerialization memberSerialization)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateObjectContract(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateContract(Type objectType)
+   en System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.ResolveContract(Type type)
+   en Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   en Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__3.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 61
+
+=== Información de estado anterior al enlace ===
+LOG: DisplayName = Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+ (Fully-specified)
+LOG: Appbase = file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/
+LOG: PrivatePath inicial = C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\bin
+Ensamblado de llamada : Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null.
+===
+LOG: Este enlace empieza en el contexto de carga default.
+LOG: Utilización del archivo de configuración de la aplicación: C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\web.config
+LOG: Utilizando el archivo de configuración de host: C:\Users\apoyo2_ogti\Documents\IISExpress\config\aspnet.config
+LOG: Utilizando el archivo de configuración del equipo en C:\Windows\Microsoft.NET\Framework\v4.0.30319\config\machine.config.
+LOG: Referencia posterior a la directiva: Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/bin/Newtonsoft.Json.DLL.
+AVS: Al comparar el nombre de ensamblado se generó la incompatibilidad: Versión principal
+ERR: Error al completar la instalación del ensamblado (hr = 0x80131040). Finalizó la búsqueda.
+ 
+ 
+2024-11-12 16:34:56,708 [6] ERROR App  
+ System.IO.FileLoadException: No se puede cargar el archivo o ensamblado 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed' ni una de sus dependencias. La definición del manifiesto del ensamblado no coincide con la referencia al ensamblado. (Excepción de HRESULT: 0x80131040)
+Nombre de archivo: 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'
+   en System.ModuleHandle.ResolveType(RuntimeModule module, Int32 typeToken, IntPtr* typeInstArgs, Int32 typeInstCount, IntPtr* methodInstArgs, Int32 methodInstCount, ObjectHandleOnStack type)
+   en System.ModuleHandle.ResolveTypeHandleInternal(RuntimeModule module, Int32 typeToken, RuntimeTypeHandle[] typeInstantiationContext, RuntimeTypeHandle[] methodInstantiationContext)
+   en System.Reflection.RuntimeModule.ResolveType(Int32 metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+   en System.Reflection.CustomAttribute.FilterCustomAttributeRecord(CustomAttributeRecord caRecord, MetadataImport scope, Assembly& lastAptcaOkAssembly, RuntimeModule decoratedModule, MetadataToken decoratedToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, Object[] attributes, IList derivedAttributes, RuntimeType& attributeType, IRuntimeMethodInfo& ctor, Boolean& ctorHasParameters, Boolean& isVarArg)
+   en System.Reflection.CustomAttribute.IsCustomAttributeDefined(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, RuntimeType attributeFilterType, Int32 attributeCtorToken, Boolean mustBeInheritable)
+   en System.Reflection.CustomAttribute.IsDefined(RuntimePropertyInfo property, RuntimeType caType)
+   en System.Reflection.RuntimePropertyInfo.IsDefined(Type attributeType, Boolean inherit)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.GetSerializableMembers(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperties(Type type, MemberSerialization memberSerialization)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateObjectContract(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateContract(Type objectType)
+   en System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.ResolveContract(Type type)
+   en Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   en Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__3.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 61
+
+=== Información de estado anterior al enlace ===
+LOG: DisplayName = Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+ (Fully-specified)
+LOG: Appbase = file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/
+LOG: PrivatePath inicial = C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\bin
+Ensamblado de llamada : Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null.
+===
+LOG: Este enlace empieza en el contexto de carga default.
+LOG: Utilización del archivo de configuración de la aplicación: C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\web.config
+LOG: Utilizando el archivo de configuración de host: C:\Users\apoyo2_ogti\Documents\IISExpress\config\aspnet.config
+LOG: Utilizando el archivo de configuración del equipo en C:\Windows\Microsoft.NET\Framework\v4.0.30319\config\machine.config.
+LOG: Referencia posterior a la directiva: Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/bin/Newtonsoft.Json.DLL.
+AVS: Al comparar el nombre de ensamblado se generó la incompatibilidad: Versión principal
+ERR: Error al completar la instalación del ensamblado (hr = 0x80131040). Finalizó la búsqueda.
+ 
+ 
+2024-11-12 16:35:21,451 [6] ERROR App  
+ System.IO.FileLoadException: No se puede cargar el archivo o ensamblado 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed' ni una de sus dependencias. La definición del manifiesto del ensamblado no coincide con la referencia al ensamblado. (Excepción de HRESULT: 0x80131040)
+Nombre de archivo: 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'
+   en System.ModuleHandle.ResolveType(RuntimeModule module, Int32 typeToken, IntPtr* typeInstArgs, Int32 typeInstCount, IntPtr* methodInstArgs, Int32 methodInstCount, ObjectHandleOnStack type)
+   en System.ModuleHandle.ResolveTypeHandleInternal(RuntimeModule module, Int32 typeToken, RuntimeTypeHandle[] typeInstantiationContext, RuntimeTypeHandle[] methodInstantiationContext)
+   en System.Reflection.RuntimeModule.ResolveType(Int32 metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+   en System.Reflection.CustomAttribute.FilterCustomAttributeRecord(CustomAttributeRecord caRecord, MetadataImport scope, Assembly& lastAptcaOkAssembly, RuntimeModule decoratedModule, MetadataToken decoratedToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, Object[] attributes, IList derivedAttributes, RuntimeType& attributeType, IRuntimeMethodInfo& ctor, Boolean& ctorHasParameters, Boolean& isVarArg)
+   en System.Reflection.CustomAttribute.IsCustomAttributeDefined(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, RuntimeType attributeFilterType, Int32 attributeCtorToken, Boolean mustBeInheritable)
+   en System.Reflection.CustomAttribute.IsDefined(RuntimePropertyInfo property, RuntimeType caType)
+   en System.Reflection.RuntimePropertyInfo.IsDefined(Type attributeType, Boolean inherit)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.GetSerializableMembers(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperties(Type type, MemberSerialization memberSerialization)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateObjectContract(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateContract(Type objectType)
+   en System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.ResolveContract(Type type)
+   en Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   en Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__3.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 61
+
+=== Información de estado anterior al enlace ===
+LOG: DisplayName = Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+ (Fully-specified)
+LOG: Appbase = file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/
+LOG: PrivatePath inicial = C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\bin
+Ensamblado de llamada : Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null.
+===
+LOG: Este enlace empieza en el contexto de carga default.
+LOG: Utilización del archivo de configuración de la aplicación: C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\web.config
+LOG: Utilizando el archivo de configuración de host: C:\Users\apoyo2_ogti\Documents\IISExpress\config\aspnet.config
+LOG: Utilizando el archivo de configuración del equipo en C:\Windows\Microsoft.NET\Framework\v4.0.30319\config\machine.config.
+LOG: Referencia posterior a la directiva: Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/bin/Newtonsoft.Json.DLL.
+AVS: Al comparar el nombre de ensamblado se generó la incompatibilidad: Versión principal
+ERR: Error al completar la instalación del ensamblado (hr = 0x80131040). Finalizó la búsqueda.
+ 
+ 
+2024-11-12 16:36:49,489 [8] ERROR App  
+ System.IO.FileLoadException: No se puede cargar el archivo o ensamblado 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed' ni una de sus dependencias. La definición del manifiesto del ensamblado no coincide con la referencia al ensamblado. (Excepción de HRESULT: 0x80131040)
+Nombre de archivo: 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'
+   en System.ModuleHandle.ResolveType(RuntimeModule module, Int32 typeToken, IntPtr* typeInstArgs, Int32 typeInstCount, IntPtr* methodInstArgs, Int32 methodInstCount, ObjectHandleOnStack type)
+   en System.ModuleHandle.ResolveTypeHandleInternal(RuntimeModule module, Int32 typeToken, RuntimeTypeHandle[] typeInstantiationContext, RuntimeTypeHandle[] methodInstantiationContext)
+   en System.Reflection.RuntimeModule.ResolveType(Int32 metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+   en System.Reflection.CustomAttribute.FilterCustomAttributeRecord(CustomAttributeRecord caRecord, MetadataImport scope, Assembly& lastAptcaOkAssembly, RuntimeModule decoratedModule, MetadataToken decoratedToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, Object[] attributes, IList derivedAttributes, RuntimeType& attributeType, IRuntimeMethodInfo& ctor, Boolean& ctorHasParameters, Boolean& isVarArg)
+   en System.Reflection.CustomAttribute.IsCustomAttributeDefined(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, RuntimeType attributeFilterType, Int32 attributeCtorToken, Boolean mustBeInheritable)
+   en System.Reflection.CustomAttribute.IsDefined(RuntimePropertyInfo property, RuntimeType caType)
+   en System.Reflection.RuntimePropertyInfo.IsDefined(Type attributeType, Boolean inherit)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.GetSerializableMembers(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperties(Type type, MemberSerialization memberSerialization)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateObjectContract(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateContract(Type objectType)
+   en System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.ResolveContract(Type type)
+   en Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   en Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__3.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 61
+
+=== Información de estado anterior al enlace ===
+LOG: DisplayName = Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+ (Fully-specified)
+LOG: Appbase = file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/
+LOG: PrivatePath inicial = C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\bin
+Ensamblado de llamada : Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null.
+===
+LOG: Este enlace empieza en el contexto de carga default.
+LOG: Utilización del archivo de configuración de la aplicación: C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\web.config
+LOG: Utilizando el archivo de configuración de host: C:\Users\apoyo2_ogti\Documents\IISExpress\config\aspnet.config
+LOG: Utilizando el archivo de configuración del equipo en C:\Windows\Microsoft.NET\Framework\v4.0.30319\config\machine.config.
+LOG: Referencia posterior a la directiva: Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/bin/Newtonsoft.Json.DLL.
+AVS: Al comparar el nombre de ensamblado se generó la incompatibilidad: Versión principal
+ERR: Error al completar la instalación del ensamblado (hr = 0x80131040). Finalizó la búsqueda.
+ 
+ 
+2024-11-12 16:41:32,040 [6] ERROR App  
+ System.IO.FileLoadException: No se puede cargar el archivo o ensamblado 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed' ni una de sus dependencias. La definición del manifiesto del ensamblado no coincide con la referencia al ensamblado. (Excepción de HRESULT: 0x80131040)
+Nombre de archivo: 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'
+   en System.ModuleHandle.ResolveType(RuntimeModule module, Int32 typeToken, IntPtr* typeInstArgs, Int32 typeInstCount, IntPtr* methodInstArgs, Int32 methodInstCount, ObjectHandleOnStack type)
+   en System.ModuleHandle.ResolveTypeHandleInternal(RuntimeModule module, Int32 typeToken, RuntimeTypeHandle[] typeInstantiationContext, RuntimeTypeHandle[] methodInstantiationContext)
+   en System.Reflection.RuntimeModule.ResolveType(Int32 metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+   en System.Reflection.CustomAttribute.FilterCustomAttributeRecord(CustomAttributeRecord caRecord, MetadataImport scope, Assembly& lastAptcaOkAssembly, RuntimeModule decoratedModule, MetadataToken decoratedToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, Object[] attributes, IList derivedAttributes, RuntimeType& attributeType, IRuntimeMethodInfo& ctor, Boolean& ctorHasParameters, Boolean& isVarArg)
+   en System.Reflection.CustomAttribute.IsCustomAttributeDefined(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, RuntimeType attributeFilterType, Int32 attributeCtorToken, Boolean mustBeInheritable)
+   en System.Reflection.CustomAttribute.IsDefined(RuntimePropertyInfo property, RuntimeType caType)
+   en System.Reflection.RuntimePropertyInfo.IsDefined(Type attributeType, Boolean inherit)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.GetSerializableMembers(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperties(Type type, MemberSerialization memberSerialization)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateObjectContract(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateContract(Type objectType)
+   en System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.ResolveContract(Type type)
+   en Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   en Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__3.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 61
+
+=== Información de estado anterior al enlace ===
+LOG: DisplayName = Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+ (Fully-specified)
+LOG: Appbase = file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/
+LOG: PrivatePath inicial = C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\bin
+Ensamblado de llamada : Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null.
+===
+LOG: Este enlace empieza en el contexto de carga default.
+LOG: Utilización del archivo de configuración de la aplicación: C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\web.config
+LOG: Utilizando el archivo de configuración de host: C:\Users\apoyo2_ogti\Documents\IISExpress\config\aspnet.config
+LOG: Utilizando el archivo de configuración del equipo en C:\Windows\Microsoft.NET\Framework\v4.0.30319\config\machine.config.
+LOG: Referencia posterior a la directiva: Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/bin/Newtonsoft.Json.DLL.
+AVS: Al comparar el nombre de ensamblado se generó la incompatibilidad: Versión principal
+ERR: Error al completar la instalación del ensamblado (hr = 0x80131040). Finalizó la búsqueda.
+ 
+ 
+2024-11-12 16:52:33,519 [6] ERROR App  
+ System.IO.FileLoadException: No se puede cargar el archivo o ensamblado 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed' ni una de sus dependencias. La definición del manifiesto del ensamblado no coincide con la referencia al ensamblado. (Excepción de HRESULT: 0x80131040)
+Nombre de archivo: 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'
+   en System.ModuleHandle.ResolveType(RuntimeModule module, Int32 typeToken, IntPtr* typeInstArgs, Int32 typeInstCount, IntPtr* methodInstArgs, Int32 methodInstCount, ObjectHandleOnStack type)
+   en System.ModuleHandle.ResolveTypeHandleInternal(RuntimeModule module, Int32 typeToken, RuntimeTypeHandle[] typeInstantiationContext, RuntimeTypeHandle[] methodInstantiationContext)
+   en System.Reflection.RuntimeModule.ResolveType(Int32 metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+   en System.Reflection.CustomAttribute.FilterCustomAttributeRecord(CustomAttributeRecord caRecord, MetadataImport scope, Assembly& lastAptcaOkAssembly, RuntimeModule decoratedModule, MetadataToken decoratedToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, Object[] attributes, IList derivedAttributes, RuntimeType& attributeType, IRuntimeMethodInfo& ctor, Boolean& ctorHasParameters, Boolean& isVarArg)
+   en System.Reflection.CustomAttribute.IsCustomAttributeDefined(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, RuntimeType attributeFilterType, Int32 attributeCtorToken, Boolean mustBeInheritable)
+   en System.Reflection.CustomAttribute.IsDefined(RuntimePropertyInfo property, RuntimeType caType)
+   en System.Reflection.RuntimePropertyInfo.IsDefined(Type attributeType, Boolean inherit)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.GetSerializableMembers(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperties(Type type, MemberSerialization memberSerialization)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateObjectContract(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateContract(Type objectType)
+   en System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.ResolveContract(Type type)
+   en Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   en Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__3.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 61
+
+=== Información de estado anterior al enlace ===
+LOG: DisplayName = Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+ (Fully-specified)
+LOG: Appbase = file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/
+LOG: PrivatePath inicial = C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\bin
+Ensamblado de llamada : Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null.
+===
+LOG: Este enlace empieza en el contexto de carga default.
+LOG: Utilización del archivo de configuración de la aplicación: C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\web.config
+LOG: Utilizando el archivo de configuración de host: C:\Users\apoyo2_ogti\Documents\IISExpress\config\aspnet.config
+LOG: Utilizando el archivo de configuración del equipo en C:\Windows\Microsoft.NET\Framework\v4.0.30319\config\machine.config.
+LOG: Referencia posterior a la directiva: Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/bin/Newtonsoft.Json.DLL.
+AVS: Al comparar el nombre de ensamblado se generó la incompatibilidad: Versión principal
+ERR: Error al completar la instalación del ensamblado (hr = 0x80131040). Finalizó la búsqueda.
+ 
+ 
+2024-11-12 16:52:36,732 [6] ERROR App  
+ System.IO.FileLoadException: No se puede cargar el archivo o ensamblado 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed' ni una de sus dependencias. La definición del manifiesto del ensamblado no coincide con la referencia al ensamblado. (Excepción de HRESULT: 0x80131040)
+Nombre de archivo: 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'
+   en System.ModuleHandle.ResolveType(RuntimeModule module, Int32 typeToken, IntPtr* typeInstArgs, Int32 typeInstCount, IntPtr* methodInstArgs, Int32 methodInstCount, ObjectHandleOnStack type)
+   en System.ModuleHandle.ResolveTypeHandleInternal(RuntimeModule module, Int32 typeToken, RuntimeTypeHandle[] typeInstantiationContext, RuntimeTypeHandle[] methodInstantiationContext)
+   en System.Reflection.RuntimeModule.ResolveType(Int32 metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+   en System.Reflection.CustomAttribute.FilterCustomAttributeRecord(CustomAttributeRecord caRecord, MetadataImport scope, Assembly& lastAptcaOkAssembly, RuntimeModule decoratedModule, MetadataToken decoratedToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, Object[] attributes, IList derivedAttributes, RuntimeType& attributeType, IRuntimeMethodInfo& ctor, Boolean& ctorHasParameters, Boolean& isVarArg)
+   en System.Reflection.CustomAttribute.IsCustomAttributeDefined(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, RuntimeType attributeFilterType, Int32 attributeCtorToken, Boolean mustBeInheritable)
+   en System.Reflection.CustomAttribute.IsDefined(RuntimePropertyInfo property, RuntimeType caType)
+   en System.Reflection.RuntimePropertyInfo.IsDefined(Type attributeType, Boolean inherit)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.GetSerializableMembers(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperties(Type type, MemberSerialization memberSerialization)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateObjectContract(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateContract(Type objectType)
+   en System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.ResolveContract(Type type)
+   en Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   en Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__3.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 61
+
+=== Información de estado anterior al enlace ===
+LOG: DisplayName = Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+ (Fully-specified)
+LOG: Appbase = file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/
+LOG: PrivatePath inicial = C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\bin
+Ensamblado de llamada : Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null.
+===
+LOG: Este enlace empieza en el contexto de carga default.
+LOG: Utilización del archivo de configuración de la aplicación: C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\web.config
+LOG: Utilizando el archivo de configuración de host: C:\Users\apoyo2_ogti\Documents\IISExpress\config\aspnet.config
+LOG: Utilizando el archivo de configuración del equipo en C:\Windows\Microsoft.NET\Framework\v4.0.30319\config\machine.config.
+LOG: Referencia posterior a la directiva: Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/bin/Newtonsoft.Json.DLL.
+AVS: Al comparar el nombre de ensamblado se generó la incompatibilidad: Versión principal
+ERR: Error al completar la instalación del ensamblado (hr = 0x80131040). Finalizó la búsqueda.
+ 
+ 
+2024-11-12 16:52:38,782 [7] ERROR App  
+ System.IO.FileLoadException: No se puede cargar el archivo o ensamblado 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed' ni una de sus dependencias. La definición del manifiesto del ensamblado no coincide con la referencia al ensamblado. (Excepción de HRESULT: 0x80131040)
+Nombre de archivo: 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'
+   en System.ModuleHandle.ResolveType(RuntimeModule module, Int32 typeToken, IntPtr* typeInstArgs, Int32 typeInstCount, IntPtr* methodInstArgs, Int32 methodInstCount, ObjectHandleOnStack type)
+   en System.ModuleHandle.ResolveTypeHandleInternal(RuntimeModule module, Int32 typeToken, RuntimeTypeHandle[] typeInstantiationContext, RuntimeTypeHandle[] methodInstantiationContext)
+   en System.Reflection.RuntimeModule.ResolveType(Int32 metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+   en System.Reflection.CustomAttribute.FilterCustomAttributeRecord(CustomAttributeRecord caRecord, MetadataImport scope, Assembly& lastAptcaOkAssembly, RuntimeModule decoratedModule, MetadataToken decoratedToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, Object[] attributes, IList derivedAttributes, RuntimeType& attributeType, IRuntimeMethodInfo& ctor, Boolean& ctorHasParameters, Boolean& isVarArg)
+   en System.Reflection.CustomAttribute.IsCustomAttributeDefined(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, RuntimeType attributeFilterType, Int32 attributeCtorToken, Boolean mustBeInheritable)
+   en System.Reflection.CustomAttribute.IsDefined(RuntimePropertyInfo property, RuntimeType caType)
+   en System.Reflection.RuntimePropertyInfo.IsDefined(Type attributeType, Boolean inherit)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.GetSerializableMembers(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperties(Type type, MemberSerialization memberSerialization)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateObjectContract(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateContract(Type objectType)
+   en System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.ResolveContract(Type type)
+   en Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   en Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__3.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 61
+
+=== Información de estado anterior al enlace ===
+LOG: DisplayName = Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+ (Fully-specified)
+LOG: Appbase = file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/
+LOG: PrivatePath inicial = C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\bin
+Ensamblado de llamada : Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null.
+===
+LOG: Este enlace empieza en el contexto de carga default.
+LOG: Utilización del archivo de configuración de la aplicación: C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\web.config
+LOG: Utilizando el archivo de configuración de host: C:\Users\apoyo2_ogti\Documents\IISExpress\config\aspnet.config
+LOG: Utilizando el archivo de configuración del equipo en C:\Windows\Microsoft.NET\Framework\v4.0.30319\config\machine.config.
+LOG: Referencia posterior a la directiva: Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/bin/Newtonsoft.Json.DLL.
+AVS: Al comparar el nombre de ensamblado se generó la incompatibilidad: Versión principal
+ERR: Error al completar la instalación del ensamblado (hr = 0x80131040). Finalizó la búsqueda.
+ 
+ 
+2024-11-12 16:53:04,176 [6] ERROR App  
+ System.IO.FileLoadException: No se puede cargar el archivo o ensamblado 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed' ni una de sus dependencias. La definición del manifiesto del ensamblado no coincide con la referencia al ensamblado. (Excepción de HRESULT: 0x80131040)
+Nombre de archivo: 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'
+   en System.ModuleHandle.ResolveType(RuntimeModule module, Int32 typeToken, IntPtr* typeInstArgs, Int32 typeInstCount, IntPtr* methodInstArgs, Int32 methodInstCount, ObjectHandleOnStack type)
+   en System.ModuleHandle.ResolveTypeHandleInternal(RuntimeModule module, Int32 typeToken, RuntimeTypeHandle[] typeInstantiationContext, RuntimeTypeHandle[] methodInstantiationContext)
+   en System.Reflection.RuntimeModule.ResolveType(Int32 metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+   en System.Reflection.CustomAttribute.FilterCustomAttributeRecord(CustomAttributeRecord caRecord, MetadataImport scope, Assembly& lastAptcaOkAssembly, RuntimeModule decoratedModule, MetadataToken decoratedToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, Object[] attributes, IList derivedAttributes, RuntimeType& attributeType, IRuntimeMethodInfo& ctor, Boolean& ctorHasParameters, Boolean& isVarArg)
+   en System.Reflection.CustomAttribute.IsCustomAttributeDefined(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, RuntimeType attributeFilterType, Int32 attributeCtorToken, Boolean mustBeInheritable)
+   en System.Reflection.CustomAttribute.IsDefined(RuntimePropertyInfo property, RuntimeType caType)
+   en System.Reflection.RuntimePropertyInfo.IsDefined(Type attributeType, Boolean inherit)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.GetSerializableMembers(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperties(Type type, MemberSerialization memberSerialization)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateObjectContract(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateContract(Type objectType)
+   en System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.ResolveContract(Type type)
+   en Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   en Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__3.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 61
+
+=== Información de estado anterior al enlace ===
+LOG: DisplayName = Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+ (Fully-specified)
+LOG: Appbase = file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/
+LOG: PrivatePath inicial = C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\bin
+Ensamblado de llamada : Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null.
+===
+LOG: Este enlace empieza en el contexto de carga default.
+LOG: Utilización del archivo de configuración de la aplicación: C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\web.config
+LOG: Utilizando el archivo de configuración de host: C:\Users\apoyo2_ogti\Documents\IISExpress\config\aspnet.config
+LOG: Utilizando el archivo de configuración del equipo en C:\Windows\Microsoft.NET\Framework\v4.0.30319\config\machine.config.
+LOG: Referencia posterior a la directiva: Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/bin/Newtonsoft.Json.DLL.
+AVS: Al comparar el nombre de ensamblado se generó la incompatibilidad: Versión principal
+ERR: Error al completar la instalación del ensamblado (hr = 0x80131040). Finalizó la búsqueda.
+ 
+ 
+2024-11-12 17:06:01,272 [7] ERROR App  
+ System.IO.FileLoadException: No se puede cargar el archivo o ensamblado 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed' ni una de sus dependencias. La definición del manifiesto del ensamblado no coincide con la referencia al ensamblado. (Excepción de HRESULT: 0x80131040)
+Nombre de archivo: 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'
+   en System.ModuleHandle.ResolveType(RuntimeModule module, Int32 typeToken, IntPtr* typeInstArgs, Int32 typeInstCount, IntPtr* methodInstArgs, Int32 methodInstCount, ObjectHandleOnStack type)
+   en System.ModuleHandle.ResolveTypeHandleInternal(RuntimeModule module, Int32 typeToken, RuntimeTypeHandle[] typeInstantiationContext, RuntimeTypeHandle[] methodInstantiationContext)
+   en System.Reflection.RuntimeModule.ResolveType(Int32 metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+   en System.Reflection.CustomAttribute.FilterCustomAttributeRecord(CustomAttributeRecord caRecord, MetadataImport scope, Assembly& lastAptcaOkAssembly, RuntimeModule decoratedModule, MetadataToken decoratedToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, Object[] attributes, IList derivedAttributes, RuntimeType& attributeType, IRuntimeMethodInfo& ctor, Boolean& ctorHasParameters, Boolean& isVarArg)
+   en System.Reflection.CustomAttribute.IsCustomAttributeDefined(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, RuntimeType attributeFilterType, Int32 attributeCtorToken, Boolean mustBeInheritable)
+   en System.Reflection.CustomAttribute.IsDefined(RuntimePropertyInfo property, RuntimeType caType)
+   en System.Reflection.RuntimePropertyInfo.IsDefined(Type attributeType, Boolean inherit)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.GetSerializableMembers(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperties(Type type, MemberSerialization memberSerialization)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateObjectContract(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateContract(Type objectType)
+   en System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.ResolveContract(Type type)
+   en Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   en Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__3.MoveNext() en C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\Controllers\AccountController.cs:línea 61
+
+=== Información de estado anterior al enlace ===
+LOG: DisplayName = Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+ (Fully-specified)
+LOG: Appbase = file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/
+LOG: PrivatePath inicial = C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\bin
+Ensamblado de llamada : Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null.
+===
+LOG: Este enlace empieza en el contexto de carga default.
+LOG: Utilización del archivo de configuración de la aplicación: C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\web.config
+LOG: Utilizando el archivo de configuración de host: C:\Users\apoyo2_ogti\Documents\IISExpress\config\aspnet.config
+LOG: Utilizando el archivo de configuración del equipo en C:\Windows\Microsoft.NET\Framework\v4.0.30319\config\machine.config.
+LOG: Referencia posterior a la directiva: Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/bin/Newtonsoft.Json.DLL.
+AVS: Al comparar el nombre de ensamblado se generó la incompatibilidad: Versión principal
+ERR: Error al completar la instalación del ensamblado (hr = 0x80131040). Finalizó la búsqueda.
+ 
+ 
+2024-11-12 17:17:15,748 [5] ERROR App  
+ System.IO.FileLoadException: No se puede cargar el archivo o ensamblado 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed' ni una de sus dependencias. La definición del manifiesto del ensamblado no coincide con la referencia al ensamblado. (Excepción de HRESULT: 0x80131040)
+Nombre de archivo: 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'
+   en System.ModuleHandle.ResolveType(RuntimeModule module, Int32 typeToken, IntPtr* typeInstArgs, Int32 typeInstCount, IntPtr* methodInstArgs, Int32 methodInstCount, ObjectHandleOnStack type)
+   en System.ModuleHandle.ResolveTypeHandleInternal(RuntimeModule module, Int32 typeToken, RuntimeTypeHandle[] typeInstantiationContext, RuntimeTypeHandle[] methodInstantiationContext)
+   en System.Reflection.RuntimeModule.ResolveType(Int32 metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+   en System.Reflection.CustomAttribute.FilterCustomAttributeRecord(CustomAttributeRecord caRecord, MetadataImport scope, Assembly& lastAptcaOkAssembly, RuntimeModule decoratedModule, MetadataToken decoratedToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, Object[] attributes, IList derivedAttributes, RuntimeType& attributeType, IRuntimeMethodInfo& ctor, Boolean& ctorHasParameters, Boolean& isVarArg)
+   en System.Reflection.CustomAttribute.IsCustomAttributeDefined(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, RuntimeType attributeFilterType, Int32 attributeCtorToken, Boolean mustBeInheritable)
+   en System.Reflection.CustomAttribute.IsDefined(RuntimePropertyInfo property, RuntimeType caType)
+   en System.Reflection.RuntimePropertyInfo.IsDefined(Type attributeType, Boolean inherit)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.GetSerializableMembers(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperties(Type type, MemberSerialization memberSerialization)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateObjectContract(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateContract(Type objectType)
+   en System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.ResolveContract(Type type)
+   en Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   en Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__3.MoveNext()
+
+=== Información de estado anterior al enlace ===
+LOG: DisplayName = Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+ (Fully-specified)
+LOG: Appbase = file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/
+LOG: PrivatePath inicial = C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\bin
+Ensamblado de llamada : Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null.
+===
+LOG: Este enlace empieza en el contexto de carga default.
+LOG: Utilización del archivo de configuración de la aplicación: C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\web.config
+LOG: Utilizando el archivo de configuración de host: C:\Users\apoyo2_ogti\Documents\IISExpress\config\aspnet.config
+LOG: Utilizando el archivo de configuración del equipo en C:\Windows\Microsoft.NET\Framework\v4.0.30319\config\machine.config.
+LOG: Referencia posterior a la directiva: Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/bin/Newtonsoft.Json.DLL.
+AVS: Al comparar el nombre de ensamblado se generó la incompatibilidad: Versión principal
+ERR: Error al completar la instalación del ensamblado (hr = 0x80131040). Finalizó la búsqueda.
+ 
+ 
+2024-11-12 17:18:06,032 [5] ERROR App  
+ System.IO.FileLoadException: No se puede cargar el archivo o ensamblado 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed' ni una de sus dependencias. La definición del manifiesto del ensamblado no coincide con la referencia al ensamblado. (Excepción de HRESULT: 0x80131040)
+Nombre de archivo: 'Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'
+   en System.ModuleHandle.ResolveType(RuntimeModule module, Int32 typeToken, IntPtr* typeInstArgs, Int32 typeInstCount, IntPtr* methodInstArgs, Int32 methodInstCount, ObjectHandleOnStack type)
+   en System.ModuleHandle.ResolveTypeHandleInternal(RuntimeModule module, Int32 typeToken, RuntimeTypeHandle[] typeInstantiationContext, RuntimeTypeHandle[] methodInstantiationContext)
+   en System.Reflection.RuntimeModule.ResolveType(Int32 metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+   en System.Reflection.CustomAttribute.FilterCustomAttributeRecord(CustomAttributeRecord caRecord, MetadataImport scope, Assembly& lastAptcaOkAssembly, RuntimeModule decoratedModule, MetadataToken decoratedToken, RuntimeType attributeFilterType, Boolean mustBeInheritable, Object[] attributes, IList derivedAttributes, RuntimeType& attributeType, IRuntimeMethodInfo& ctor, Boolean& ctorHasParameters, Boolean& isVarArg)
+   en System.Reflection.CustomAttribute.IsCustomAttributeDefined(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, RuntimeType attributeFilterType, Int32 attributeCtorToken, Boolean mustBeInheritable)
+   en System.Reflection.CustomAttribute.IsDefined(RuntimePropertyInfo property, RuntimeType caType)
+   en System.Reflection.RuntimePropertyInfo.IsDefined(Type attributeType, Boolean inherit)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.GetSerializableMembers(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateProperties(Type type, MemberSerialization memberSerialization)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateObjectContract(Type objectType)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.CreateContract(Type objectType)
+   en System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   en Newtonsoft.Json.Serialization.DefaultContractResolver.ResolveContract(Type type)
+   en Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   en Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   en Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   en FrontEnd.Controllers.AccountController.<Connect>d__3.MoveNext()
+
+=== Información de estado anterior al enlace ===
+LOG: DisplayName = Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+ (Fully-specified)
+LOG: Appbase = file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/
+LOG: PrivatePath inicial = C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\bin
+Ensamblado de llamada : Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null.
+===
+LOG: Este enlace empieza en el contexto de carga default.
+LOG: Utilización del archivo de configuración de la aplicación: C:\Projects\Sistema_Planeamiento\Sistema de Planeamiento\FrontEnd\web.config
+LOG: Utilizando el archivo de configuración de host: C:\Users\apoyo2_ogti\Documents\IISExpress\config\aspnet.config
+LOG: Utilizando el archivo de configuración del equipo en C:\Windows\Microsoft.NET\Framework\v4.0.30319\config\machine.config.
+LOG: Referencia posterior a la directiva: Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Users/apoyo2_ogti/AppData/Local/Temp/Temporary ASP.NET Files/vs/cbc8c8cb/b980168e/Newtonsoft.Json/Newtonsoft.Json.DLL.
+LOG: Intento de descarga de la nueva dirección URL file:///C:/Projects/Sistema_Planeamiento/Sistema de Planeamiento/FrontEnd/bin/Newtonsoft.Json.DLL.
+AVS: Al comparar el nombre de ensamblado se generó la incompatibilidad: Versión principal
+ERR: Error al completar la instalación del ensamblado (hr = 0x80131040). Finalizó la búsqueda.
+ 
+ 

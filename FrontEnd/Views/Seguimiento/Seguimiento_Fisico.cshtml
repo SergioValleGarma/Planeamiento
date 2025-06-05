@@ -1,0 +1,395 @@
+﻿@using Newtonsoft.Json
+@using FrontEnd.Models;
+
+@{
+    ViewBag.Title = "Seguimiento_Fisico";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool isSupervisor = GlobalConfig.isSupervisor;
+}
+
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6"><h3 class="mb-0">Seguimiento Físico</h3></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-end">
+                    <li class="breadcrumb-item"><a href="#">Seguimiento</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Seguimiento Físico</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-dark" role="alert">
+                    <ul class="p-2 m-0">
+                        <li class="fs-6">Unidad Orgánica: <b>@ViewBag.Dependencia</b></li>
+                        <li class="fs-6">Año: <b>@ViewBag.Anio</b></li>
+                        <li class="fs-6">Id de Actividad Operativa: <b>@ViewBag.Codigo_Actividad</b></li>
+                        <li class="fs-6">Denominacion: <b>@ViewBag.Denominacion</b></li>
+                    </ul>
+                </div>
+                <div class="d-flex justify-content-end mt-4 gap-3 mt-4">
+                    <a href="@Url.Action("Index")" class="btn btn-sm btn-secondary mr-2">Regresar</a>
+                </div>
+
+                <input type="text" class="form-control d-none" id="Id_Actividad" value="@ViewBag.Id_Actividad" disabled />
+                <input type="number" class="form-control d-none" id="Cod_Dependencia" value="@ViewBag.Cod_Dependencia" disabled />
+                <input type="number" class="form-control d-none" id="Anio" value="@ViewBag.Anio" disabled />
+
+                <div class="d-flex flex-column gap-3 align-items-center justify-content-center my-3" id="container-seguimiento">
+                </div>
+
+
+                <div class="d-flex gap-2 my-4">
+                    <div id="avance-mensual" class="w-100 position-relative">
+                    </div>
+                    <div id="avance-anual" class="w-100 position-relative">
+                    </div>
+                </div>
+
+                <div class="modal fade" id="justificarModal" tabindex="-1" aria-labelledby="justificarModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-center">Justificación - ENE</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="text-center fw-semibold">Agregar comentarios o justificación personal</p>
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" placeholder="Leave a comment here"
+                                              id="justificarTextArea" style="height: 150px;"></textarea>
+                                    <label for="justificarTextArea">Comentarios</label>
+                                </div>
+
+                                @* Si es supervisor, NO puede justificar *@
+                                @if (!isSupervisor)
+                                {
+                                    <button class="w-100 btn btn-sm btn-dark" id="btn-justificar">Guardar</button>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"];
+            const mesesBloqueados = @Html.Raw(JsonConvert.SerializeObject(ViewBag.MesesBloqueados));
+            const { Mes: lastAvailableMonth } = mesesBloqueados.sort((a, b) => a.Mes - b.Mes).findLast(mes => !mes.Bloqueado) ?? { Mes: 12 };
+
+            function listarTareas() {
+                const params = { Id_Actividad: $("#Id_Actividad").val()}
+                $.ajax({
+                    url: '@Url.Action("Listar_Tareas", "Seguimiento")',
+                    beforeSend: function () {
+                        $('#loading').modal('show');
+                    },
+                    contentType: "application/json",
+                    dataType: "json",
+                    type: 'POST',
+                    data: JSON.stringify(params),
+                    success: function (response) {
+                        if (!response.success) return;
+
+                        if (!response.data.length) {
+                            toastr.info("No hay tareas disponibles");
+                        }
+
+                        buildRows(response.data);
+                        buildCharts(response.data);
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        console.log("Error: ", errorMessage);
+                    },
+                    complete: function () {
+                        $('#loading').modal('hide');
+                    }
+                });
+            }
+
+            function buildRows(data) {
+                let html = "";
+                data.forEach(({ Cab_Tarea, Detalle }, index) => {
+                    html += `
+                        <div class="w-100 p-3 border border-2 border-secondary rounded">
+                            <div class="mb-3">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Desagregación</th>
+                                            <th>Proceso</th>
+                                            <th>Unidad de Medida</th>
+                                        </tr>
+                                    </thead>
+                                    </tbody class="table-group-divider">
+                                         <tr>
+                                            <td>Tarea N° ${index + 1}: ${Cab_Tarea.Desagregacion}</td>
+                                            <td>${Cab_Tarea.Proceso}</td>
+                                            <td>${Cab_Tarea.Unidad_Medida}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mt-2 detalle-tareas">
+                                <div class="row">
+                                    ${Detalle.map(det => {
+                                        const mesBloqueado = mesesBloqueados.find((obj) => obj.Mes == det.Mes_Programado)?.Bloqueado ? "disabled" : "";
+                                        return `
+                                            <div class="col-sm-6 col-md-4 col-lg-2 mb-1">
+                                                <div class="p-3 rounded text-center" style="border: 1px dashed #adabab;">
+                                                    <p class="p-0 m-0 fw-bold">${meses[det.Mes_Programado - 1]}</p>
+                                                    <small class="fw-ligth">Programado: <b>${det.Cantidad_Programado}</b></small>
+                                                    <div class="mt-2">
+                                                        <input
+                                                            class="w-100 text-center form-control mb-2 cantidadSeg"
+                                                            type="number"
+                                                            min="0"
+                                                            ${mesBloqueado}
+                                                            value="${det.Cantidad_Seguimiento == 0 ? "" : det.Cantidad_Seguimiento}"/>
+                                                        <button
+                                                            class="w-100 btn btn-sm btn-dark btn-openJustificarModal"
+                                                            data-mes="${det.Mes_Programado}"
+                                                            data-iddetalle="${det.iCodDetTarea_Act}"
+                                                            data-idtarea="${Cab_Tarea.iCodTarea_Act}"
+                                                            data-justificacion="${det.Justificacion}"
+                                                            ${mesBloqueado}
+                                                        >Justificación
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `}).join("")
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                $('#container-seguimiento').html(html);
+            }
+
+            function buildCharts(data) {
+
+                if (data.length == 0) return;
+
+                const monthCut = meses.slice(0, lastAvailableMonth);
+
+                let programadoSeries = {
+                    name: 'Programado',
+                    data: new Array(12).fill(0)
+                };
+
+                let ejecutadoSeries = {
+                    name: 'Ejecutado',
+                    data: new Array(12).fill(0)
+                };
+
+                console.log(data);
+
+                data.forEach(task => {
+                    if (task.Cab_Tarea.bCePlan) {
+                        task.Detalle.forEach(detail => {
+                            const monthIndex = detail.Mes_Programado - 1;
+                            programadoSeries.data[monthIndex] += detail.Cantidad_Programado || 0;
+                            ejecutadoSeries.data[monthIndex] += detail.Cantidad_Seguimiento || 0;
+                        });
+                    }
+                });
+
+                const programadoSeriesTotal = programadoSeries.data.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+                const ejecutadoSeriesTotal = ejecutadoSeries.data.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+                programadoSeries = { ...programadoSeries, data: [...programadoSeries.data.slice(0, lastAvailableMonth)] };
+                ejecutadoSeries = { ...ejecutadoSeries, data: [...ejecutadoSeries.data.slice(0, lastAvailableMonth)] };
+
+                const programadoSeriesTotalUntilMonthCut = programadoSeries.data.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+                const ejecutadoSeriesTotalUntilMonthCut = ejecutadoSeries.data.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+                Highcharts.chart('avance-mensual', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: `Avance Mensual hasta ${monthCut[monthCut.length - 1]}`
+                    },
+                    xAxis: {
+                        categories: monthCut,
+                        crosshair: true,
+                        accessibility: {
+                            description: 'Seguimiento'
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: ''
+                        }
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y}'
+                            }
+                        }
+                    },
+                    series: [
+                        programadoSeries,
+                        ejecutadoSeries
+                    ]
+                });
+
+                Highcharts.chart('avance-anual', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Avance Anual'
+                    },
+                    xAxis: {
+                        categories: ['Programado', 'Ejecutado'],
+                        crosshair: true,
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: ''
+                        }
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y}'
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'Programado',
+                            data: [programadoSeriesTotal]
+                        },
+                        {
+                            name: 'Ejecutado',
+                            data: [ejecutadoSeriesTotal]
+                        }
+                    ]
+                });
+
+                const monthPercentage = ((ejecutadoSeriesTotalUntilMonthCut / programadoSeriesTotalUntilMonthCut) * 100);
+                const anualPercentage = ((ejecutadoSeriesTotal / programadoSeriesTotal) * 100);
+
+                buildPercentage("#avance-mensual", monthPercentage);
+                buildPercentage("#avance-anual", anualPercentage);
+            }
+
+            function buildPercentage(container, percentage) {
+                let roundedResult = Math.round(percentage);
+
+                if (isNaN(roundedResult) || !isFinite(roundedResult)) {
+                    roundedResult = 0;
+                }
+
+                $(container).append(`<div
+                class='position-absolute bg-secondary text-white fw-bold px-4 fs-4 rounded-2 top-0' style="left: 5%">
+                ${roundedResult}%</div>`);
+            }
+
+            $(document).on('click', '.btn-openJustificarModal', function () {
+                const modalEl = $('#justificarModal');
+                const mesProgramado = $(this).data("mes");
+                const justificacion = $(this).data("justificacion");
+
+                modalEl.find(".modal-title").text(`Justificación - ${meses[mesProgramado - 1].toUpperCase()}`);
+                modalEl.find("#justificarTextArea").val(justificacion);
+
+                modalEl.data("mes", mesProgramado);
+                modalEl.data("cantidadSeg", $(this).siblings('.cantidadSeg').val());
+                modalEl.data("iddetalle", $(this).data("iddetalle"));
+                modalEl.data("idtarea", $(this).data("idtarea"));
+                modalEl.data("justificacion", justificacion);
+
+                modalEl.modal('show');
+            });
+
+            $(document).on('click', '.openDet', function () {
+                $(this).siblings('.detalle-tareas').toggle('hide');
+            });
+
+            $(document).on('click', '#btn-justificar', function () {
+                const modalEl = $('#justificarModal');
+
+                const model = {
+                    iCodTarea_Act: modalEl.data("idtarea"),
+                    iCodDetTarea_Act: modalEl.data("iddetalle"),
+                    nMes: modalEl.data("mes"),
+                    nvJustificacion: modalEl.find("#justificarTextArea").val(),
+                    nCantidad: modalEl.data("cantidadSeg")
+                }
+
+                $.ajax({
+                    url: '@Url.Action("Registrar_Seguimiento", "Seguimiento")',
+                    beforeSend: function () {
+                        $('#loading').modal('show');
+                    },
+                    contentType: "application/json",
+                    dataType: "json",
+                    type: 'POST',
+                    data: JSON.stringify(model),
+                    success: function (response) {
+                        if (!response.success) {
+                            response.errors.forEach(({ Errors }) => {
+                                Errors.forEach(error => {
+                                    toastr.error(error)
+                                });
+                            });
+                            return;
+                        }
+
+                        if (response.data.Status == "error") {
+                            toastr.error(response.data.Message);
+                            return;
+                        }
+
+                        toastr.success(response.data.Message);
+                        listarTareas();
+
+                        modalEl.modal('hide');
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        console.log("Error: ", errorMessage);
+                    },
+                    complete: function () {
+                        $('#loading').modal('hide');
+                    }
+                });
+            });
+
+            $(document).on("input", 'input[type="number"]', function (e) {
+                // Bloquea caracteres no numéricos (solo números positivos enteros)
+                this.value = this.value.replace(/[^0-9]/g, "");
+            });
+
+            listarTareas();
+
+        });
+    </script>
+}
